@@ -1,0 +1,27 @@
+Animal Band
+
+- get sound files for single notes of different instruments
+	* piano
+	* guitar
+	* drums
+	* trumpet?
+	* violin?
+	* cell?
+
+- setup scene
+	* bar
+		-> draw stage
+		-> draw audience
+
+- animals
+	* draw them
+	* animate them
+
+- make song editor
+	* user can write melodies for each animal's instrument
+	* save/load json files containing songs
+
+- add extras
+	* audience applauds
+	* spotlight
+	* ...
