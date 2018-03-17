@@ -1,7 +1,7 @@
 import SpriteKit
 import UIKit
 
-public class ChoirScene: SKScene {
+public class BandScene: SKScene {
     
     var containerSize: CGSize!
     

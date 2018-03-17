@@ -8,10 +8,10 @@ public class SceneView: SKView {
         super.init(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         
         
-        let choirScene = ChoirScene(size: size)
-        choirScene.scaleMode = .aspectFill
+        let bandScene = BandScene(size: size)
+        bandScene.scaleMode = .aspectFill
         
-        self.presentScene(choirScene)
+        self.presentScene(bandScene)
         
         self.showsNodeCount = true
     }
