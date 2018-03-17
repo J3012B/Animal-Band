@@ -1,0 +1,3 @@
+Info:
+
+- BandScene-Size in Pixels: 256px * 256px

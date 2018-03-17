@@ -57,6 +57,7 @@ public class BandScene: SKScene {
     private func addElements() {
         addBackground()
         addGround()
+        addAnimals()
     }
     
     private func addBackground() {
@@ -81,6 +82,16 @@ public class BandScene: SKScene {
         ground.texture?.filteringMode = .nearest
         
         self.addChild(ground)
+    }
+    
+    private func addAnimals() {
+        let animalPianoCat = SKSpriteNode(imageNamed: "piano_cat.png")
+        animalPianoCat.position = CGPoint(x: 200.0, y: 100.0)
+        animalPianoCat.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        animalPianoCat.texture?.filteringMode = .nearest;
+        animalPianoCat.scaleTo(newHeight: 0.1875 * frame.height)
+        
+        self.addChild(animalPianoCat)
     }
 }
 

@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SpriteKit
 
 extension UIColor {
     convenience init(hex: String) {
@@ -21,5 +22,17 @@ extension UIColor {
                       alpha: CGFloat(1.0))
         }
     }
+    
+}
+
+
+extension SKSpriteNode {
+    func scaleTo(newHeight: CGFloat) {
+        let newWidth = frame.width * (newHeight / frame.height)
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        
+        self.scale(to: newSize)
+    }
+    
     
 }

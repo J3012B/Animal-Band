@@ -14,6 +14,11 @@ Animal Band
 		-> draw audience
 
 - animals
+	* cat -> piano
+	* dog -> guitar
+	* frog -> drums
+	* turtle -> cello
+	*
 	* draw them
 	* animate them
 

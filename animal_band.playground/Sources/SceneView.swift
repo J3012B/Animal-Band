@@ -4,12 +4,13 @@ import Foundation
 
 public class SceneView: SKView {
     
-    public init(size: CGSize) {
-        super.init(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
         
         
-        let bandScene = BandScene(size: size)
-        bandScene.scaleMode = .aspectFill
+        let bandSceneWidth = min(frame.size.width, frame.size.height)
+        let bandScene = BandScene(size: CGSize(width: bandSceneWidth, height: bandSceneWidth))
+        bandScene.scaleMode = .aspectFit
         
         self.presentScene(bandScene)
         
