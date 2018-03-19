@@ -1,7 +1,10 @@
 import SpriteKit
 import UIKit
+import AVFoundation
 
 public class BandScene: SKScene {
+    
+    var player: AVAudioPlayer?
     
     var containerSize: CGSize!
     
@@ -12,6 +15,8 @@ public class BandScene: SKScene {
         
         let containerLength = CGFloat(min(Float(size.width), Float(size.height)))
         containerSize = CGSize(width: containerLength, height: containerLength)
+        
+        prepareAudio()
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -19,7 +24,18 @@ public class BandScene: SKScene {
     }
     
     public override func didMove(to view: SKView) {
+        prepareSongInstructions()
+        
         addElements()
+    }
+    
+    /*
+     ===================================================================
+     =========================== LOAD SONGS ============================
+     */
+    
+    private func prepareSongInstructions() {
+        
     }
     
     /*
@@ -27,9 +43,18 @@ public class BandScene: SKScene {
      ============================== BAND ===============================
      */
     
-    private func playSong() {
-        print("Band begins to play a song")
+    private func prepareAudio() {
+        player = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "sounds/piano/c2", withExtension: "mp3")!)
+        player?.prepareToPlay()
     }
+    
+    private func playSong() {
+        print("play c2")
+        
+        player?.play()
+        
+    }
+
     
     /*
      ===================================================================
@@ -160,7 +185,8 @@ public class BandScene: SKScene {
         let playBtn = SKButton(defaultButtonImage: "Menu/Play_Button/playButton_default.png", activeButtonImage: "Menu/Play_Button/playButton_active.png", buttonAction: playSong)
         playBtn.scaleTo(newHeight: menu.frame.height)
         playBtn.position = CGPoint(x: menu.frame.width, y: 0.0)
-        playBtn.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+        playBtn.anchorPoint = CGPoint(x: 1.0, y: 0.5)
+        playBtn.color = UIColor.yellow
         
         menu.addChild(playBtn)
         
