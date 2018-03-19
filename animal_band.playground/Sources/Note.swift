@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Note {
+public struct Note : Codable {
     var pitch: String
     var octave: Int
     var time: Int

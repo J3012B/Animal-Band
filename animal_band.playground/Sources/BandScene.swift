@@ -24,7 +24,7 @@ public class BandScene: SKScene {
     }
     
     public override func didMove(to view: SKView) {
-        prepareSongInstructions()
+        prepareSongInstructions(filePath: "songs/alle_meine_entchen")
         
         addElements()
     }
@@ -34,8 +34,58 @@ public class BandScene: SKScene {
      =========================== LOAD SONGS ============================
      */
     
-    private func prepareSongInstructions() {
+    /*
+    private func readJson(fileName: String) {
+        do {
+            if let file = Bundle.main.url(forResource: fileName, withExtension: ".json") {
+                let data = try Data(contentsOf: file)
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                if let object = json as? [String: Any] {
+                    // json is a dictionary
+                    print(object)
+                } else if let object = json as? [Any] {
+                    // json is an array
+                    print(object)
+                } else {
+                    print("JSON is invalid")
+                }
+            } else {
+                print("no file")
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }*/
+    
+    private func prepareSongInstructions(filePath: String) {
+        if let path = Bundle.main.path(forResource: filePath, ofType: "json") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                if let song = jsonResult as? Dictionary<String, AnyObject>, let info = song["info"] as? [String: Int] {
+                    //print("JSON result is \(jsonResult) and type of it is: \(type(of: jsonResult))")
+                    print("Song info is: \(info)");
+                    print("Tempo is: \(info["tempo"]!)")
+                }
+            } catch {
+                print("BandScene.prepareSongInstructions >> Could not prepare song instructions for '\(filePath)'")
+            }
+        }
         
+        /*
+        do {
+            if let data = try Data(contentsOf: Bundle.main.url(forResource: fileName, withExtension: ".json")!) as String? {
+                let jsonData = jsonString.data(encoding: .utf8)!
+                let decoder = JSONDecoder()
+                let song = try! decoder.decode(Song.self, for: jsonData)
+                
+                print("The info of song is: " +  song)
+            } else {
+                print("Couldn't load JSON")
+            }
+        } catch {
+            print(error.localizedDescription)
+        }*/
     }
     
     /*

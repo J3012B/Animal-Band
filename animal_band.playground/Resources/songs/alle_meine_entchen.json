@@ -1,7 +1,9 @@
 {
-	"tempo": 100,
-	"beats": 4,
-	"rythm": 4,
+    "info": {
+        "tempo": 100,
+        "beats": 4,
+        "rythm": 4
+    },
 	"instruments": {
 		"piano": [
 			{
