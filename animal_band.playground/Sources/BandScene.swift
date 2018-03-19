@@ -4,8 +4,9 @@ import AVFoundation
 
 public class BandScene: SKScene {
     
-    var currentSong: Song = Song()
-    var player: AVAudioPlayer?
+    var currentSong: Song?
+    var currentTimeStep: Int = 0
+    var notePlayers: [NotePlayer] = []
     
     var containerSize: CGSize!
     
@@ -17,6 +18,7 @@ public class BandScene: SKScene {
         let containerLength = CGFloat(min(Float(size.width), Float(size.height)))
         containerSize = CGSize(width: containerLength, height: containerLength)
         
+        loadSong(filePath: "songs/alle_meine_entchen")
         prepareAudio()
     }
     
@@ -25,62 +27,20 @@ public class BandScene: SKScene {
     }
     
     public override func didMove(to view: SKView) {
-        prepareSongInstructions(filePath: "songs/alle_meine_entchen")
+        //loadSong(filePath: "songs/alle_meine_entchen")
         
         addElements()
     }
     
     /*
      ===================================================================
-     =========================== LOAD SONGS ============================
+     ============================== SONGS ==============================
      */
     
-    private func prepareSongInstructions(filePath: String) {
-        if let path = Bundle.main.path(forResource: filePath, ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                if  let song = jsonResult as? Dictionary<String, AnyObject>,
-                    let info = song["info"] as? [String: Int],
-                    let instruments = song["instruments"] as? [String : [[String: Any]]]  {
-                    
-                    self.currentSong.tempo = info["tempo"]
-                    self.currentSong.beats = info["beats"]
-                    self.currentSong.rythm = info["tempo"]
-                    
-                    for (instrument, notes) in instruments {
-                        print(instrument + " plays the following notes:")
-                        
-                        for note in notes {
-                            let pitch = note["pitch"] as! String
-                            let octave = note["octave"] as! Int
-                            let time = note["time"] as! Int
-                                                        
-                            let newNote = Note(pitch: pitch, octave: octave, time: time)
-                            
-                            if self.currentSong.instruments[instrument] != nil {
-                                self.currentSong.instruments[instrument]! += [newNote]
-                            } else {
-                                self.currentSong.instruments[instrument] = [newNote]
-                            }
-                        }
-                        
-                        if self.currentSong.instruments[instrument] != nil {
-                             print(self.currentSong.instruments[instrument]!)
-                        } else {
-                            print("No notes")
-                        }
-                       
-                        print("\n")
-                    }
-                    
-                } else {
-                    print("BandScene.prepareSongInstructions >> Could not load song from json")
-                }
-            } catch {
-                print("BandScene.prepareSongInstructions >> Could not prepare song instructions for '\(filePath)'")
-            }
-        }
+    private func loadSong(filePath: String) {
+        self.currentSong = Song(filePath: filePath)
+        
+        print("BandScene.loadSong >> Loaded song with path '\(filePath)'")
     }
     
     /*
@@ -89,15 +49,75 @@ public class BandScene: SKScene {
      */
     
     private func prepareAudio() {
-        player = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "sounds/piano/c2", withExtension: "mp3")!)
-        player?.prepareToPlay()
+        //player = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "sounds/piano/c2", withExtension: "mp3")!)
+        //player?.prepareToPlay()
     }
     
     private func playSong() {
-        print("play c2")
+        if self.currentSong != nil {
+            
+            for (instrument, notes) in self.currentSong!.instruments {
+                //print(instrument)
+                
+                for note in notes {
+                    //print(instrument + " plays a " + note.pitch! + "\(note.octave!) at \(note.time!)")
+                    
+                    do {
+                        let filePath = "sounds/\(instrument)/\(note.pitch!)\(note.octave!)"
+                        
+                        if let notePlayerPath = Bundle.main.url(forResource: filePath, withExtension: "mp3") {
+                            let newNotePlayer = NotePlayer(player: try AVAudioPlayer(contentsOf: notePlayerPath), timeToPlay: note.time)
+                            
+                            self.notePlayers += [newNotePlayer]
+                            
+                            print("Created new note player")
+                        }
+                    } catch {
+                        print("BandScene.playSong >> Could not create note player")
+                    }
+                }
+            }
+            
+            _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(playTimeStep), userInfo: nil, repeats: false)
+
+        }
+    }
+    
+    @objc private func playTimeStep(aTimer: Timer) {
+        print("Current Time Step is: \(self.currentTimeStep)")
         
-        player?.play()
+        // calculate length of song
+        var songIsOver = false
+        var notesPlayed = 0
+        var notePlayersToPlay = [NotePlayer]()
         
+        if self.currentTimeStep >= self.currentSong!.length {
+            songIsOver = true
+        }
+        
+        if songIsOver {
+            // reset everything here
+            self.currentTimeStep = 0
+            self.notePlayers = []
+        } else {
+            for notePlayer in self.notePlayers {
+                if notePlayer.timeToPlay == self.currentTimeStep {
+                    notePlayersToPlay.append(notePlayer)
+                }
+            }
+            
+            for notePlayer in notePlayersToPlay {
+                notePlayer.player.play()
+                notesPlayed += 1
+            }
+            
+            self.currentTimeStep += 1
+            
+            let sixteenths = Double(15) / Double(self.currentSong!.tempo)
+            print("Played \(notesPlayed) notes")
+            print("Length of 16th is: \(self.currentSong!.tempo)")
+            _ = Timer.scheduledTimer(timeInterval: sixteenths, target: self, selector: #selector(playTimeStep), userInfo: nil, repeats: false)
+        }
     }
 
     

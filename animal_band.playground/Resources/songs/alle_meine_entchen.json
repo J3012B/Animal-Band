@@ -1,50 +1,386 @@
 {
     "info": {
-        "tempo": 100,
+        "tempo": 150,
         "beats": 4,
         "rythm": 4
     },
-	"instruments": {
-		"piano": [
-			{
-				"pitch": "c",
-				"octave": 4,
-				"time": 0
-			},
-			{
-				"pitch": "d",
-				"octave": 4,
-				"time": 4
-			},
-			{
-				"pitch": "e",
-				"octave": 4,
-				"time": 8
-			},
-			{
-				"pitch": "f",
-				"octave": 4,
-				"time": 12
-			},
-			{
-				"pitch": "g",
-				"octave": 4,
-				"time": 16
-			},
-			{
-				"pitch": "g",
-				"octave": 4,
-				"time": 24
-			}
-		],
-		"guitar": [
-			
-		],
-		"drums": [
-
-		],
-		"cello": [
-
-		]
-	}
+    "instruments": {
+        "piano": [
+                  {
+                  "pitch": "c",
+                  "octave": 4,
+                  "time": 0
+                  },
+                  {
+                  "pitch": "d",
+                  "octave": 4,
+                  "time": 4
+                  },
+                  {
+                  "pitch": "e",
+                  "octave": 4,
+                  "time": 8
+                  },
+                  {
+                  "pitch": "f",
+                  "octave": 4,
+                  "time": 12
+                  },
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  {
+                  "pitch": "g",
+                  "octave": 4,
+                  "time": 16
+                  },
+                  {
+                  "pitch": "c",
+                  "octave": 3,
+                  "time": 16
+                  },
+                  {
+                  "pitch": "c",
+                  "octave": 3,
+                  "time": 20
+                  },
+                  {
+                  "pitch": "c",
+                  "octave": 3,
+                  "time": 24
+                  },
+                  {
+                  "pitch": "c",
+                  "octave": 3,
+                  "time": 28
+                  },
+                  
+                  {
+                  "pitch": "g",
+                  "octave": 4,
+                  "time": 24
+                  },
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  {
+                  "pitch": "a",
+                  "octave": 4,
+                  "time": 32
+                  },
+                  {
+                  "pitch": "f",
+                  "octave": 3,
+                  "time": 32
+                  },
+                  {
+                  "pitch": "a",
+                  "octave": 4,
+                  "time": 36
+                  },
+                  {
+                  "pitch": "f",
+                  "octave": 3,
+                  "time": 36
+                  },
+                  {
+                  "pitch": "a",
+                  "octave": 4,
+                  "time": 40
+                  },
+                  {
+                  "pitch": "f",
+                  "octave": 3,
+                  "time": 40
+                  },
+                  {
+                  "pitch": "a",
+                  "octave": 4,
+                  "time": 44
+                  },
+                  {
+                  "pitch": "f",
+                  "octave": 3,
+                  "time": 44
+                  },
+                  
+                  
+                  
+                  
+                  
+                  {
+                  "pitch": "g",
+                  "octave": 4,
+                  "time": 48
+                  },
+                  {
+                  "pitch": "c",
+                  "octave": 3,
+                  "time": 48
+                  },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 52
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 56
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 60
+                    },
+                  
+                  
+                  
+                  
+                    {
+                    "pitch": "a",
+                    "octave": 4,
+                    "time": 64
+                    },
+                    {
+                    "pitch": "f",
+                    "octave": 3,
+                    "time": 64
+                    },
+                    {
+                    "pitch": "a",
+                    "octave": 4,
+                    "time": 68
+                    },
+                    {
+                    "pitch": "f",
+                    "octave": 3,
+                    "time": 68
+                    },
+                    {
+                    "pitch": "a",
+                    "octave": 4,
+                    "time": 72
+                    },
+                    {
+                    "pitch": "f",
+                    "octave": 3,
+                    "time": 72
+                    },
+                    {
+                    "pitch": "a",
+                    "octave": 4,
+                    "time": 76
+                    },
+                    {
+                    "pitch": "f",
+                    "octave": 3,
+                    "time": 76
+                    },
+                  
+                  
+                  
+                  
+                  
+                    
+                    {
+                    "pitch": "g",
+                    "octave": 4,
+                    "time": 80
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 80
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 84
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 88
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 92
+                    },
+                  
+                  
+                  
+                  
+                    
+                    {
+                    "pitch": "f",
+                    "octave": 4,
+                    "time": 96
+                    },
+                    {
+                    "pitch": "f",
+                    "octave": 4,
+                    "time": 100
+                    },
+                    {
+                    "pitch": "f",
+                    "octave": 4,
+                    "time": 104
+                    },
+                    {
+                    "pitch": "f",
+                    "octave": 4,
+                    "time": 108
+                    },
+                    {
+                    "pitch": "g",
+                    "octave": 3,
+                    "time": 96
+                    },
+                    {
+                    "pitch": "g",
+                    "octave": 3,
+                    "time": 100
+                    },
+                    {
+                    "pitch": "g",
+                    "octave": 3,
+                    "time": 104
+                    },
+                    {
+                    "pitch": "g",
+                    "octave": 3,
+                    "time": 108
+                    },
+                  
+                  
+                  
+                  
+                    {
+                    "pitch": "e",
+                    "octave": 4,
+                    "time": 112
+                    },
+                    {
+                    "pitch": "e",
+                    "octave": 4,
+                    "time": 120
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 112
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 116
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 120
+                    },
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 124
+                    },
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                    {
+                    "pitch": "d",
+                    "octave": 4,
+                    "time": 128
+                    },
+                    {
+                    "pitch": "d",
+                    "octave": 4,
+                    "time": 132
+                    },
+                  {
+                  "pitch": "d",
+                  "octave": 4,
+                  "time": 136
+                  },
+                  {
+                  "pitch": "d",
+                  "octave": 4,
+                  "time": 140
+                  },
+                  {
+                  "pitch": "g",
+                  "octave": 3,
+                  "time": 128
+                  },
+                  {
+                  "pitch": "g",
+                  "octave": 3,
+                  "time": 132
+                  },
+                  {
+                  "pitch": "g",
+                  "octave": 3,
+                  "time": 136
+                  },
+                  {
+                  "pitch": "g",
+                  "octave": 3,
+                  "time": 140
+                  },
+                  
+                  
+                  
+                  
+                  
+                  
+                    {
+                    "pitch": "c",
+                    "octave": 3,
+                    "time": 144
+                    },
+                  {
+                  "pitch": "e",
+                  "octave": 3,
+                  "time": 144
+                  },
+                  {
+                  "pitch": "g",
+                  "octave": 3,
+                  "time": 144
+                  },
+                    {
+                    "pitch": "c",
+                    "octave": 4,
+                    "time": 144
+                    }
+                  
+                  
+                  ],
+        "guitar": [
+        
+        ],
+        "drums": [
+        
+        ],
+        "cello": [
+        
+        ]
+    }
 }
+
