@@ -4,6 +4,7 @@ import AVFoundation
 
 public class BandScene: SKScene {
     
+    var currentSong: Song = Song()
     var player: AVAudioPlayer?
     
     var containerSize: CGSize!
@@ -34,58 +35,52 @@ public class BandScene: SKScene {
      =========================== LOAD SONGS ============================
      */
     
-    /*
-    private func readJson(fileName: String) {
-        do {
-            if let file = Bundle.main.url(forResource: fileName, withExtension: ".json") {
-                let data = try Data(contentsOf: file)
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let object = json as? [String: Any] {
-                    // json is a dictionary
-                    print(object)
-                } else if let object = json as? [Any] {
-                    // json is an array
-                    print(object)
-                } else {
-                    print("JSON is invalid")
-                }
-            } else {
-                print("no file")
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }*/
-    
     private func prepareSongInstructions(filePath: String) {
         if let path = Bundle.main.path(forResource: filePath, ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                if let song = jsonResult as? Dictionary<String, AnyObject>, let info = song["info"] as? [String: Int] {
-                    //print("JSON result is \(jsonResult) and type of it is: \(type(of: jsonResult))")
-                    print("Song info is: \(info)");
-                    print("Tempo is: \(info["tempo"]!)")
+                if  let song = jsonResult as? Dictionary<String, AnyObject>,
+                    let info = song["info"] as? [String: Int],
+                    let instruments = song["instruments"] as? [String : [[String: Any]]]  {
+                    
+                    self.currentSong.tempo = info["tempo"]
+                    self.currentSong.beats = info["beats"]
+                    self.currentSong.rythm = info["tempo"]
+                    
+                    for (instrument, notes) in instruments {
+                        print(instrument + " plays the following notes:")
+                        
+                        for note in notes {
+                            let pitch = note["pitch"] as! String
+                            let octave = note["octave"] as! Int
+                            let time = note["time"] as! Int
+                                                        
+                            let newNote = Note(pitch: pitch, octave: octave, time: time)
+                            
+                            if self.currentSong.instruments[instrument] != nil {
+                                self.currentSong.instruments[instrument]! += [newNote]
+                            } else {
+                                self.currentSong.instruments[instrument] = [newNote]
+                            }
+                        }
+                        
+                        if self.currentSong.instruments[instrument] != nil {
+                             print(self.currentSong.instruments[instrument]!)
+                        } else {
+                            print("No notes")
+                        }
+                       
+                        print("\n")
+                    }
+                    
+                } else {
+                    print("BandScene.prepareSongInstructions >> Could not load song from json")
                 }
             } catch {
                 print("BandScene.prepareSongInstructions >> Could not prepare song instructions for '\(filePath)'")
             }
         }
-        
-        /*
-        do {
-            if let data = try Data(contentsOf: Bundle.main.url(forResource: fileName, withExtension: ".json")!) as String? {
-                let jsonData = jsonString.data(encoding: .utf8)!
-                let decoder = JSONDecoder()
-                let song = try! decoder.decode(Song.self, for: jsonData)
-                
-                print("The info of song is: " +  song)
-            } else {
-                print("Couldn't load JSON")
-            }
-        } catch {
-            print(error.localizedDescription)
-        }*/
     }
     
     /*

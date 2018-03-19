@@ -1,10 +1,18 @@
 import Foundation
 
-public class Song : Codable {
-    public var info: [String: Int]?
-    public var instruments: [String: [Note]]?
+public struct Song {
+    public var tempo: Int!
+    public var beats: Int!
+    public var rythm: Int!
+    public var instruments: [String: [Note]]!
+    
+    public init() {
+        self.tempo = 100
+        self.beats = 4
+        self.rythm = 4
+        self.instruments = [String : [Note]]()
+    }
 }
-
 
 /*
     SAMPLE JSON
