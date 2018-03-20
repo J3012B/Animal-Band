@@ -133,7 +133,17 @@ public class BandScene: SKScene {
      */
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        for touch in touches {
+            let location = touch.location(in: self)
+            let node = self.atPoint(location)
+            
+            if let animal = node as? Animal {
+                for anAnimal in self.animals {
+                    anAnimal.isDragged = false
+                }
+                animal.isDragged = true
+            }
+        }
     }
     
     
@@ -144,10 +154,27 @@ public class BandScene: SKScene {
             let node = self.atPoint(location)
             
             if let animal = node as? Animal {
-                animal.position = touch.location(in: self.stage)
-                self.keepInStage(node: animal)
-                self.updateAnimalOrder()
-                animal.updateSize()
+                
+                for animal in animals {
+                    if animal.isDragged {
+                        animal.position = touch.location(in: self.stage) // update position
+                        self.keepInStage(node: animal) // make sure animal won't leave the stage
+                        self.updateAnimalOrder() // update the z-indices of the animals
+                        animal.updateSize() // update the size of the animal
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = touch.location(in: self)
+            //let node = self.atPoint(location)
+            
+            for animal in self.animals {
+                animal.isDragged = false
             }
         }
     }

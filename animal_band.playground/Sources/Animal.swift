@@ -3,6 +3,7 @@ import SpriteKit
 public class Animal: SKSpriteNode {
     
     var minHeight: CGFloat!
+    var isDragged: Bool = false
     
     public init(imageNamed: String, sceneSize: CGSize) {
         // load texture
