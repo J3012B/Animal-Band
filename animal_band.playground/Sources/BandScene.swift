@@ -67,6 +67,7 @@ public class BandScene: SKScene {
                         
                         if let notePlayerPath = Bundle.main.url(forResource: filePath, withExtension: "mp3") {
                             let newNotePlayer = NotePlayer(player: try AVAudioPlayer(contentsOf: notePlayerPath), timeToPlay: note.time)
+                            newNotePlayer.player.volume = 0.7
                             
                             self.notePlayers += [newNotePlayer]
                             
@@ -102,6 +103,9 @@ public class BandScene: SKScene {
         } else {
             for notePlayer in self.notePlayers {
                 if notePlayer.timeToPlay == self.currentTimeStep {
+                    if self.currentTimeStep % 8 == 0 {
+                        notePlayer.player.volume = 1.0
+                    }
                     notePlayersToPlay.append(notePlayer)
                 }
             }
@@ -227,13 +231,38 @@ public class BandScene: SKScene {
  
     
     private func addAnimals() {
-        let animalPianoCat = SKSpriteNode(imageNamed: "Animals/Piano_Cat/piano_cat.png")
+        // Piano Cat
+        let animalPianoCat = Animal(imageNamed: "piano_cat.png", sceneSize: frame.size)
+        animalPianoCat.position = CGPoint(x: stage.frame.width * 0.3, y: stage.frame.height * 0.7)
+        
+        // Guitar Dog
+        let animalGuitarDog = Animal(imageNamed: "guitar_dog.png", sceneSize: frame.size)
+        animalGuitarDog.position = CGPoint(x: stage.frame.width * 0.8, y: stage.frame.height * 0.5)
+        
+        // Cello Turtle
+        
+        // Drum Frog
+        
+        stage.addChild(animalPianoCat)
+        stage.addChild(animalGuitarDog)
+        
+        
+        /*let animalPianoCat = SKSpriteNode(imageNamed: "Animals/Piano_Cat/piano_cat.png")
         animalPianoCat.position = CGPoint(x: 200.0, y: 100.0)
         animalPianoCat.anchorPoint = CGPoint(x: 0.0, y: 0.0)
-        animalPianoCat.texture?.filteringMode = .nearest;
+        animalPianoCat.texture?.filteringMode = .nearest
         animalPianoCat.scaleTo(newHeight: 0.1875 * frame.height)
         
         stage.addChild(animalPianoCat)
+        
+        let animalGuitarDog = SKSpriteNode(imageNamed: "Animals/Guitar_Dog/guitar_dog.png")
+        animalGuitarDog.position = CGPoint(x: 450.0, y: 100.0)
+        animalGuitarDog.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+        animalGuitarDog.texture?.filteringMode = .nearest
+        animalGuitarDog.scaleTo(newHeight: 39/256 * frame.height)
+        
+        stage.addChild(animalGuitarDog)
+        */
     }
     
     
