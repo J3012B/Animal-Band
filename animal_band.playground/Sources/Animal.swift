@@ -9,7 +9,7 @@ public class Animal: SKSpriteNode {
         
         self.texture?.filteringMode = .nearest
         self.position = CGPoint(x: 0, y: 0)
-        self.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+        self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.scaleTo(newHeight: tex.size().height / 256 * sceneSize.height)
         
     }

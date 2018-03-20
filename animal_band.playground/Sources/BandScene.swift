@@ -134,11 +134,25 @@ public class BandScene: SKScene {
         
     }
     
+    
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            //touchMoved(toPoint: t.location(in: self))
+            let location = touch.location(in: self)
+            let node = self.atPoint(location)
+            
+            if node == self.stage {
+                print("Touches moved at stage")
+            }
+            
+            
+            if let animal = node as? Animal {
+                animal.position = touch.location(in: self.stage)
+            }
+        }
+    }
+    
     /*
-     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-     for t in touches { touchMoved(toPoint: t.location(in: self)) }
-     }
-     
      override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
      for t in touches { touchUp(atPoint: t.location(in: self)) }
      }
