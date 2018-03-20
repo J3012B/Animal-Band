@@ -8,6 +8,8 @@ public class BandScene: SKScene {
     var currentTimeStep: Int = 0
     var notePlayers: [NotePlayer] = []
     
+    var animals = [Animal]()
+    
     var containerSize: CGSize!
     
     var stage: SKSpriteNode!
@@ -141,14 +143,10 @@ public class BandScene: SKScene {
             let location = touch.location(in: self)
             let node = self.atPoint(location)
             
-            if node == self.stage {
-                print("Touches moved at stage")
-            }
-            
-            
             if let animal = node as? Animal {
                 animal.position = touch.location(in: self.stage)
                 self.keepInStage(node: animal)
+                self.updateAnimalOrder()
                 animal.updateSize()
             }
         }
@@ -185,6 +183,14 @@ public class BandScene: SKScene {
         }
         if node.frame.minY + node.frame.height * 0.2 >= self.stage.frame.height - padding {
             node.position.y = self.stage.frame.height - padding + node.frame.height * 0.2
+        }
+    }
+    
+    private func updateAnimalOrder() {
+        self.animals = self.animals.sorted(by: { $0.position.y > $1.position.y })
+        
+        for i in 0..<self.animals.count {
+            self.animals[i].zPosition = CGFloat(i)
         }
     }
     
@@ -281,8 +287,13 @@ public class BandScene: SKScene {
         stage.addChild(animalPianoCat)
         stage.addChild(animalGuitarDog)
         
+        self.animals.append(animalPianoCat)
+        self.animals.append(animalGuitarDog)
+        
         animalPianoCat.updateSize()
         animalGuitarDog.updateSize()
+        
+        self.updateAnimalOrder()
         
         
         /*let animalPianoCat = SKSpriteNode(imageNamed: "Animals/Piano_Cat/piano_cat.png")
