@@ -148,6 +148,8 @@ public class BandScene: SKScene {
             
             if let animal = node as? Animal {
                 animal.position = touch.location(in: self.stage)
+                self.keepInStage(node: animal)
+                animal.updateSize()
             }
         }
     }
@@ -165,6 +167,25 @@ public class BandScene: SKScene {
     
     public override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+    }
+    
+    
+    private func keepInStage(node: SKSpriteNode) {
+        let padding: CGFloat = self.stage.frame.height * 0.05
+        let halfOfNode = (width: node.frame.width * 0.5, height: node.frame.height * 0.5)
+        
+        if node.frame.minX <= padding {
+            node.position.x = padding + halfOfNode.width
+        }
+        if node.frame.maxX >= self.stage.frame.width - padding {
+            node.position.x = self.stage.frame.width - padding - halfOfNode.width
+        }
+        if node.frame.minY <= padding {
+            node.position.y = padding + halfOfNode.height
+        }
+        if node.frame.minY + node.frame.height * 0.2 >= self.stage.frame.height - padding {
+            node.position.y = self.stage.frame.height - padding + node.frame.height * 0.2
+        }
     }
     
     /*
@@ -259,6 +280,9 @@ public class BandScene: SKScene {
         
         stage.addChild(animalPianoCat)
         stage.addChild(animalGuitarDog)
+        
+        animalPianoCat.updateSize()
+        animalGuitarDog.updateSize()
         
         
         /*let animalPianoCat = SKSpriteNode(imageNamed: "Animals/Piano_Cat/piano_cat.png")
