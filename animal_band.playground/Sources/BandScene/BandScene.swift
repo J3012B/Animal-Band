@@ -169,8 +169,8 @@ public class BandScene: SKScene {
     }
     
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            let location = touch.location(in: self)
+        for _ in touches {
+            //let location = touch.location(in: self)
             //let node = self.atPoint(location)
             
             for animal in self.animals {
