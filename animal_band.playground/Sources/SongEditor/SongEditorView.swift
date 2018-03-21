@@ -3,11 +3,13 @@ import UIKit
 public class SongEditorView: UIView {
     
     private var menuBar: UIView!
-    private var body: UIView!
+    private var instrumentPicker: Picker!
+    private var body: SongEditorBody!
     
-    private var currentInstrument: String!
+    private var currentInstrument: String = "Piano"
+    private var currentSong: String!
+    private var songLength: Int = 0
     
-    private let availableInstruments = ["piano", "guitar", "cello", "drums"]
     
     
     
@@ -17,6 +19,7 @@ public class SongEditorView: UIView {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor.blue
+        self.currentSong = "songs/alle_meine_entchen.json"
         
         self.addUI()
     }
@@ -28,8 +31,11 @@ public class SongEditorView: UIView {
     
     
     
+    
+    
     private func instrumentPickerButtonPushed() {
-        print("User clicked on the instrument picker button")
+        self.currentInstrument = self.instrumentPicker.currentTitle
+        self.body.reload(songName: self.currentSong, instrument: currentInstrument)
     }
     
     /*
@@ -61,7 +67,7 @@ public class SongEditorView: UIView {
         /* Add Instrument Picker */
         let instrumentPickerFrame = CGRect(x: padding, y: padding, width: frame.width * 0.3, height: menuBar.frame.height - 2 * padding)
         let instrumentPickerTitles = ["Piano", "Guitar", "Cello", "Drums"]
-        let instrumentPicker = Picker(frame: instrumentPickerFrame, titles: instrumentPickerTitles, action: instrumentPickerButtonPushed)
+        instrumentPicker = Picker(frame: instrumentPickerFrame, titles: instrumentPickerTitles, action: instrumentPickerButtonPushed)
         
         self.menuBar.addSubview(instrumentPicker)
         
@@ -70,30 +76,15 @@ public class SongEditorView: UIView {
     /*  BODY  */
     
     private func addBody() {
-        body = UIView(frame: CGRect(x: 0.0, y: menuBar.frame.maxY, width: frame.width, height: frame.height - menuBar.frame.height))
-        body.backgroundColor = UIColor(hex: "ffffff")
+        let bodyFrame = CGRect(x: 0.0, y: menuBar.frame.maxY, width: frame.width, height: frame.height - menuBar.frame.height)
+        
+        print("Will init body with '\(currentSong!)' and '\(currentInstrument)'")
+        
+        body = SongEditorBody(frame: bodyFrame, songName: self.currentSong!, instrument: self.currentInstrument)
         
         self.addSubview(body)
-        
-        self.addScaleView()
-        self.addNoteField()
     }
     
-    private func addScaleView() {
-        let scaleView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: body.frame.width * 0.15, height: body.frame.height))
-        scaleView.backgroundColor = UIColor.green
-        
-        body.addSubview(scaleView)
-    }
     
-    private func addNoteField() {
-        let noteFieldFrame = CGRect(x: body.frame.width * 0.15, y: 0.0, width: body.frame.width * 0.85, height: body.frame.height)
-        let noteField = UIScrollView(frame: noteFieldFrame)
-        
-        noteField.contentSize = CGSize(width: 500.0, height: 700.0)
-        noteField.backgroundColor = UIColor.brown
-        
-        body.addSubview(noteField)
-    }
 }
 

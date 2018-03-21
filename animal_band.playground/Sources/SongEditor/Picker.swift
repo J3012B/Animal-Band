@@ -38,6 +38,7 @@ class Picker: UIView {
         }
         
         self.textLbl.text = self.titles[currentIndex]
+        self.currentTitle = self.textLbl!.text!
         
         action()
     }
@@ -49,6 +50,7 @@ class Picker: UIView {
         }
         
         self.textLbl.text = self.titles[currentIndex]
+        self.currentTitle = self.textLbl!.text!
         
         action()
     }

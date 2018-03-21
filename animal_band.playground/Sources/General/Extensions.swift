@@ -33,6 +33,12 @@ extension SKSpriteNode {
         
         self.scale(to: newSize)
     }
-    
-    
+}
+
+
+extension UIScrollView {
+    func hideIndicators() {
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
+    }
 }
