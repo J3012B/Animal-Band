@@ -153,7 +153,7 @@ public class BandScene: SKScene {
             let location = touch.location(in: self)
             let node = self.atPoint(location)
             
-            if let animal = node as? Animal {
+            if let _ = node as? Animal {
                 
                 for animal in animals {
                     if animal.isDragged {
@@ -321,24 +321,6 @@ public class BandScene: SKScene {
         animalGuitarDog.updateSize()
         
         self.updateAnimalOrder()
-        
-        
-        /*let animalPianoCat = SKSpriteNode(imageNamed: "Animals/Piano_Cat/piano_cat.png")
-        animalPianoCat.position = CGPoint(x: 200.0, y: 100.0)
-        animalPianoCat.anchorPoint = CGPoint(x: 0.0, y: 0.0)
-        animalPianoCat.texture?.filteringMode = .nearest
-        animalPianoCat.scaleTo(newHeight: 0.1875 * frame.height)
-        
-        stage.addChild(animalPianoCat)
-        
-        let animalGuitarDog = SKSpriteNode(imageNamed: "Animals/Guitar_Dog/guitar_dog.png")
-        animalGuitarDog.position = CGPoint(x: 450.0, y: 100.0)
-        animalGuitarDog.anchorPoint = CGPoint(x: 0.0, y: 0.0)
-        animalGuitarDog.texture?.filteringMode = .nearest
-        animalGuitarDog.scaleTo(newHeight: 39/256 * frame.height)
-        
-        stage.addChild(animalGuitarDog)
-        */
     }
     
     
@@ -355,7 +337,7 @@ public class BandScene: SKScene {
         let playBtn = SKButton(defaultButtonImage: "Menu/Play_Button/playButton_default.png", activeButtonImage: "Menu/Play_Button/playButton_active.png", buttonAction: playSong)
         playBtn.scaleTo(newHeight: menu.frame.height)
         playBtn.position = CGPoint(x: menu.frame.width, y: 0.0)
-        playBtn.anchorPoint = CGPoint(x: 1.0, y: 0.5)
+        playBtn.anchorPoint = CGPoint(x: 1.0, y: 1.0)
         playBtn.color = UIColor.yellow
         
         menu.addChild(playBtn)

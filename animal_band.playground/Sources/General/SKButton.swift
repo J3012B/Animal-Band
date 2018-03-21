@@ -9,6 +9,13 @@ public class SKButton: SKSpriteNode {
     public init(defaultButtonImage: String, activeButtonImage: String, buttonAction: @escaping () -> Void) {
         defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
         activeButton = SKSpriteNode(imageNamed: activeButtonImage)
+        
+        defaultButton.position = CGPoint(x: 0.0, y: 0.0)
+        activeButton.position = CGPoint(x: 0.0, y: 0.0)
+        
+        defaultButton.anchorPoint = CGPoint(x: 1.0, y: 1.0)
+        activeButton.anchorPoint = CGPoint(x: 1.0, y: 1.0)
+        
         defaultButton.texture?.filteringMode = .nearest
         activeButton.texture?.filteringMode = .nearest
         

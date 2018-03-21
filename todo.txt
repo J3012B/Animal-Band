@@ -10,12 +10,13 @@ Animal Band
 
 - setup scene
 	* bar
+		-> draw wall
 		-> draw stage
-		-> draw audience
+		-> draw/animate audience
 
 - animals
-	* cat -> piano
-	* dog -> guitar
+	X cat -> piano
+	X dog -> guitar
 	* frog -> drums
 	* turtle -> cello
 	*
