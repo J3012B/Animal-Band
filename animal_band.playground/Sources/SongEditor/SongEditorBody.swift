@@ -1,6 +1,6 @@
 import UIKit
 
-public class SongEditorBody: UIView {
+public class SongEditorBody: UIView, UIScrollViewDelegate {
     
     private var scaleView: UIScrollView! // shows the pitch
     private var barView: UIView! // shows the bars
@@ -48,6 +48,19 @@ public class SongEditorBody: UIView {
     
     private func getBarCount() -> Int {
         return 32
+    }
+    
+    /*
+     ===================================================================
+     ========================== Scroll View ============================
+     */
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == self.noteField {
+            self.scaleView.contentOffset = CGPoint(x: 0.0, y: noteField.contentOffset.y)
+        } else if scrollView == self.scaleView {
+            self.noteField.contentOffset = CGPoint(x: noteField.contentOffset.x, y: scaleView.contentOffset.y)
+        }
     }
     
     /*
@@ -139,12 +152,13 @@ public class SongEditorBody: UIView {
     }
     
     private func addScaleView() {
-        scaleView = UIScrollView(frame: CGRect(x: 0.0, y: 0.0, width: self.frame.width * 0.15, height: self.frame.height))
+        scaleView = UIScrollView(frame: CGRect(x: 0.0, y: frame.height * 0.1, width: self.frame.width * 0.15, height: self.frame.height * 0.9))
         
         scaleView.contentSize = CGSize(width: 200.0, height: 500.0)
         scaleView.bounces = false
         scaleView.hideIndicators()
         scaleView.backgroundColor = UIColor(hex: "#2C3E50")
+        scaleView.delegate = self
         
         self.addSubview(scaleView)
     }
@@ -164,6 +178,7 @@ public class SongEditorBody: UIView {
         noteField.bounces = false
         noteField.indicatorStyle = .white
         noteField.backgroundColor = UIColor(hex: "#ABB2B9")
+        noteField.delegate = self
         
         self.addSubview(noteField)
     }
