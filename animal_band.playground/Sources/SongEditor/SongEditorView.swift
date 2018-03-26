@@ -18,7 +18,7 @@ public class SongEditorView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.blue
+        self.backgroundColor = UIColor(hex: "#2C3E50")
         self.currentSong = "songs/alle_meine_entchen.json"
         
         self.addUI()
