@@ -18,7 +18,9 @@ public struct Song {
         if let path = Bundle.main.path(forResource: filePath, ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                //print("Song.init >> will try to serialize json")
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                //print("Song.init >> did try to serialize json")
                 if  let song = jsonResult as? Dictionary<String, AnyObject>,
                     let info = song["info"] as? [String: Int],
                     let instruments = song["instruments"] as? [String : [[String: Any]]]  {
@@ -52,8 +54,10 @@ public struct Song {
                     
                     self.length += 8
                     
+                    //print(self)
+                    
                 } else {
-                    print("BandScene.prepareSongInstructions >> Could not load song from json")
+                    print("Song.init >> Could not load song from json")
                     self.tempo = 100
                     self.beats = 4
                     self.rythm = 4
@@ -61,7 +65,7 @@ public struct Song {
                     self.length = 0
                 }
             } catch {
-                print("BandScene.prepareSongInstructions >> Could not prepare song instructions for '\(filePath)'")
+                print("Sing.init >> Could not prepare song instructions for '\(filePath)'")
                 self.tempo = 100
                 self.beats = 4
                 self.rythm = 4

@@ -25,7 +25,7 @@ public class AnimalBandView: UIView {
         self.addSubview(songEditorView)
         
         /* Add SK Scene View */
-        let sceneViewFrame = CGRect(x: 0, y: songEditorFrame.maxY, width: frame.width, height: frame.height * 0.67)
+        let sceneViewFrame = CGRect(x: 0, y: frame.height - frame.width, width: frame.width, height: frame.width)
         let sceneView = SceneView(frame: sceneViewFrame)
         
         self.addSubview(sceneView)

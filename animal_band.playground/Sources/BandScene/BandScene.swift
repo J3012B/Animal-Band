@@ -53,6 +53,10 @@ public class BandScene: SKScene {
     private func prepareAudio() {
         //player = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "sounds/piano/c2", withExtension: "mp3")!)
         //player?.prepareToPlay()
+        
+        for player in notePlayers {
+            player.player.prepareToPlay()
+        }
     }
     
     private func playSong() {
@@ -221,6 +225,16 @@ public class BandScene: SKScene {
         }
     }
     
+    
+    /*
+     ===================================================================
+     ============================ UI Logic =============================
+     */
+    
+    /*private func songPickerButtonPushed() {
+        print("song picker button pushed")
+    }*/
+    
     /*
      ===================================================================
      ============================= SPRITES =============================
@@ -250,16 +264,19 @@ public class BandScene: SKScene {
     }
     
     private func addWall() {
+        let wallTex = SKTexture(imageNamed: "room/wall.png")
         let wall = SKSpriteNode(color: UIColor.red, size: CGSize(width: frame.width, height: frame.height * 7 / 16))
         wall.position = CGPoint(x: 0.0, y: frame.height)
         wall.anchorPoint = CGPoint(x: 0.0, y: 1.0)
         wall.zPosition = -91
+        wall.texture = wallTex
+        wall.texture?.filteringMode = .nearest
         
         self.addChild(wall)
     }
     
     private func addStage() {
-        let stageTex = SKTexture(imageNamed: "stage.png")
+        let stageTex = SKTexture(imageNamed: "room/stage.png")
         stage = SKSpriteNode(color: UIColor.brown, size: CGSize(width: frame.width, height: frame.height * 5 / 16))
         stage.position = CGPoint(x: 0.0, y: frame.height * 0.25)
         stage.anchorPoint = CGPoint(x: 0.0, y: 0.0)
@@ -271,7 +288,7 @@ public class BandScene: SKScene {
     }
     
     private func addGround() {
-        let groundTex = SKTexture(imageNamed: "ground.png")
+        let groundTex = SKTexture(imageNamed: "room/ground.png")
         let ground = SKSpriteNode(color: UIColor.blue, size: CGSize(width: frame.width, height: frame.height * 0.25))
         ground.position = CGPoint(x: 0, y: 0)
         ground.anchorPoint = CGPoint(x: 0, y: 0)
@@ -339,6 +356,7 @@ public class BandScene: SKScene {
         playBtn.position = CGPoint(x: menu.frame.width, y: 0.0)
         playBtn.anchorPoint = CGPoint(x: 1.0, y: 1.0)
         playBtn.color = UIColor.yellow
+        
         
         menu.addChild(playBtn)
         

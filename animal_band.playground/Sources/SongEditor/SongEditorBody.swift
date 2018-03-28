@@ -87,9 +87,8 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
         for j in 0..<self.songLength {
             for i in 0..<self.range {
                 let noteViewFrame = CGRect(x: CGFloat(j) * noteViewWidth, y: CGFloat(i) * noteViewHeight, width: noteViewWidth, height: noteViewHeight)
-                let noteView = UIView(frame: noteViewFrame)
+                let noteView = NoteView(frame: noteViewFrame)
                 
-                noteView.backgroundColor = UIColor(hex: "#2C3E50")
                 noteView.layer.borderWidth = 1
                 noteView.layer.borderColor = UIColor(hex: "#808B96").cgColor
                 
@@ -179,11 +178,8 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
      */
     
     private func addUI() {
-        print("will add scale view")
         self.addScaleView()
-        print("will add bar view")
         self.addBarView()
-        print("will add note field")
         self.addNoteField()
     }
     

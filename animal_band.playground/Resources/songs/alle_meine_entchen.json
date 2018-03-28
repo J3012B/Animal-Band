@@ -29,11 +29,7 @@
                   
                   
                   
-                  
-                  
-                  
-                  
-                  
+ 
                   {
                   "pitch": "g",
                   "octave": 4,
@@ -373,7 +369,17 @@
                   
                   ],
         "guitar": [
-        
+                   {
+                   "pitch": "e",
+                   "octave": 2,
+                   "time": 16
+                   },
+                   {
+                   "pitch": "g",
+                   "octave": 2,
+                   "time": 16
+                   }
+                   
         ],
         "drums": [
         
