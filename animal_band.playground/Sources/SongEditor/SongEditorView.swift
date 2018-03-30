@@ -9,7 +9,6 @@ public class SongEditorView: UIView {
     private var songSelectionView: SongSelectionView!
     
     private var currentInstrument: String = "Piano"
-    private var currentSong: String!
     private var songLength: Int = 0
     
     
@@ -21,7 +20,6 @@ public class SongEditorView: UIView {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor(hex: "#2C3E50")
-        self.currentSong = "songs/alle_meine_entchen.json"
         
         self.addUI()
     }
@@ -40,7 +38,7 @@ public class SongEditorView: UIView {
     
     private func instrumentPickerButtonPushed() {
         self.currentInstrument = self.instrumentPicker.currentTitle
-        self.body.reload(songName: self.currentSong, instrument: currentInstrument)
+        self.body.reload(instrument: currentInstrument)
     }
     
     @objc private func loadButtonPushed() {
@@ -122,9 +120,7 @@ public class SongEditorView: UIView {
     private func addBody() {
         let bodyFrame = CGRect(x: 0.0, y: menuBar.frame.maxY, width: frame.width, height: frame.height - menuBar.frame.height)
         
-        print("Will init body with '\(currentSong!)' and '\(currentInstrument)'")
-        
-        body = SongEditorBody(frame: bodyFrame, songName: self.currentSong!, instrument: self.currentInstrument)
+        body = SongEditorBody(frame: bodyFrame, instrument: self.currentInstrument)
         
         self.addSubview(body)
     }

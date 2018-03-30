@@ -4,26 +4,29 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     
     private var scaleView: UIScrollView! // shows the pitch
     private var barView: UIScrollView! // shows the bars
-    private var noteField: UIScrollView! // shows the actual notes
+    private var noteField: NoteField! // shows the actual notes
     
-    private var songName: String!
-    private var instrument: String!
-    private var range: Int!
-    private var songLength: Int!
+    private var songObject: Song!
+    private var instrument: String! // instrument pattern shown
+    private var range: Int! // range of instrument
+    private var songLength: Int! // length of the song
 
-    private let notes = ["C", "C#", "D", "D#", "E", "F", "G", "G#", "A", "A#", "B"]
+    private let notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+    private let notesUgly = ["c", "c_s_", "d", "d_s_", "e", "f", "f_s_", "g", "g_s_", "a", "a_s_", "b"]
+    private let octaveMaxDict = ["Piano": 6, "Guitar": 3, "Drums": 0, "Cello": 0] // TODO: fill 'drums' and 'cello' with proper values
+    private let ranges = ["Piano" : 72, "Guitar" : 44, "Cello" : 2, "Drums" : 30]
     
     
     /*  INITIALIZATION  */
     
-    public init(frame: CGRect, songName: String, instrument: String) {
+    public init(frame: CGRect, instrument: String) {
         super.init(frame: frame)
                 
-        self.songName = songName
         self.instrument = instrument
+        self.songObject = Song(filePath: "songs/" + currentSong)
         
         self.addUI()
-        self.reload(songName: self.songName, instrument: self.instrument)
+        self.reload(instrument: self.instrument)
         
     }
     
@@ -32,15 +35,50 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     }
     
     
+    
+    
+    
     private func getRangeOf(instrument: String) -> Int {
-        let ranges = ["Piano" : 66, "Guitar" : 10, "Cello" : 2, "Drums" : 30]
-        let range: Int = ranges[self.instrument]!
+        let range: Int = self.ranges[self.instrument]!
         
         return range
     }
     
     private func getBarCount() -> Int {
-        return 32
+        var latestBeat = 0
+        var barCount = 0
+        
+        for (_, notes) in self.songObject.instruments {
+            for note in notes {
+                if note.time > latestBeat {
+                    latestBeat = note.time
+                }
+            }
+        }
+        
+        barCount = fits(number: 16, into: latestBeat) + 1
+        
+        return barCount
+    }
+    
+    // returns a note object created using the position in the instrument's range counting from above (begins with 0)
+    private func getNote(position: Int, instrument: String, time: Int) -> Note {
+        let pitch = self.notesUgly[self.notes.count - 1 - (position % self.notes.count)]
+        
+        let octave = self.octaveMaxDict[instrument]! - fits(number: self.notes.count, into: position)
+        
+        return Note(pitch: pitch, octave: octave, time: time)
+    }
+    
+    //
+    private func getPosition(note: Note) -> Int {
+        let positionOfToneInScale = Int(self.notesUgly.index(of: note.pitch)!) // position of 'c_s_' f.i.
+        let positionInToneScale = (self.octaveMaxDict[self.instrument]! - note.octave + 1) * self.notesUgly.count - positionOfToneInScale
+        let position = note.time * self.range + positionInToneScale
+        
+        //print("SongEditorBody.getPosition >> the position of the note \(note) is \(position)")
+        
+        return position
     }
     
     /*
@@ -64,20 +102,23 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
      ============================= Reload ==============================
      */
     
-    public func reload(songName: String, instrument: String) {
+    public func reload(instrument: String) {
         self.instrument = instrument
-        self.songName = songName
         self.range = getRangeOf(instrument: instrument)
-        self.songLength = getBarCount() * 4
+        self.songLength = getBarCount() * 16
+        self.songObject = Song(filePath: "songs/" + currentSong)
         
         self.reloadNoteField()
         self.reloadScaleView()
         self.reloadBarView()
+        
+        self.loadNotes()
     }
     
     private func reloadNoteField() {
         // remove all subviews, which - in this case - are the note views
         self.noteField.subviews.forEach({ $0.removeFromSuperview() })
+        self.noteField.noteViews = []
         
         // set size of note view
         let noteViewHeight: CGFloat = self.noteField.frame.height * 0.1
@@ -88,10 +129,11 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
             for i in 0..<self.range {
                 let noteViewFrame = CGRect(x: CGFloat(j) * noteViewWidth, y: CGFloat(i) * noteViewHeight, width: noteViewWidth, height: noteViewHeight)
                 let noteView = NoteView(frame: noteViewFrame)
+                noteView.note = getNote(position: i, instrument: self.instrument, time: j)
                 
-                noteView.layer.borderWidth = 1
-                noteView.layer.borderColor = UIColor(hex: "#808B96").cgColor
+                //print("SongEditorBody.reloadNoteField >> Added note \(noteView.note) to note view")
                 
+                self.noteField.noteViews.append(noteView)
                 self.noteField.addSubview(noteView)
             }
         }
@@ -135,7 +177,7 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
         // set width of noteview
         let barLblWidth: CGFloat = self.noteField.frame.width * 0.05 * 4
         
-        for i in 0..<self.getBarCount() {
+        for i in 0..<self.songLength {
             let barLblFrame = CGRect(x: CGFloat(i) * barLblWidth, y: 0.0, width: barLblWidth, height: barView.frame.height)
             let barLbl = UILabel(frame: barLblFrame)
             
@@ -157,18 +199,20 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
         self.barView.contentSize = CGSize(width: CGFloat(self.songLength) * barLblWidth, height: barView.frame.height)
     }
     
-    private func fits(number num1: Int, into num2: Int) -> Int {
-        var currentNum = abs(num1)
-        var counter = 0
-        
-        while currentNum <= abs(num2) {
-            currentNum += abs(num1)
-            counter += 1
+    private func loadNotes() {
+        let noteList = self.songObject.instruments[self.instrument!.lowercased()]
+                
+        if noteList != nil {
+            for note in noteList! {
+                let noteIndex = getPosition(note: note)
+                self.noteField.noteViews[noteIndex].isSelected = true
+            }
+            print("SongEditorBody.loadNotes >> did load notes")
+        } else {
+            print("*** SongEditorBody.loadNotes >> Couldn't load notes with instrument '\(self.instrument!)'")
         }
         
-        return counter
     }
-    
     
  
     
@@ -209,11 +253,7 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     private func addNoteField() {
         let noteFieldFrame = CGRect(x: barView.frame.minX, y: barView.frame.maxY, width: barView.frame.width, height: frame.height - barView.frame.height)
         
-        noteField = UIScrollView(frame: noteFieldFrame)
-        noteField.contentSize = CGSize(width: 500.0, height: 700.0)
-        noteField.bounces = false
-        noteField.indicatorStyle = .white
-        noteField.backgroundColor = UIColor(hex: "#ABB2B9")
+        noteField = NoteField(frame: noteFieldFrame)
         noteField.delegate = self
         
         self.addSubview(noteField)

@@ -4,10 +4,11 @@ public class Animal: SKSpriteNode {
     
     var minHeight: CGFloat!
     var isDragged: Bool = false
+    var type: String!
     
-    public init(imageNamed: String, sceneSize: CGSize) {
+    public init(type: String, sceneSize: CGSize) {
         // load texture
-        let tex = SKTexture(imageNamed: "Animals/" + imageNamed)
+        let tex = SKTexture(imageNamed: "Animals/\(type).png")
         super.init(texture: tex, color: UIColor.clear, size: tex.size())
         
         self.texture?.filteringMode = .nearest
@@ -15,6 +16,7 @@ public class Animal: SKSpriteNode {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.scaleTo(newHeight: tex.size().height / 256 * sceneSize.height)
         self.minHeight = self.frame.height
+        self.type = type
         
         self.updateSize()
     }
@@ -31,5 +33,35 @@ public class Animal: SKSpriteNode {
             self.scaleTo(newHeight: relative * minHeight)
         }
     }
+    
+    public func startAnimation() {
+        var frames = [SKTexture]()
+        let textureAtlas = SKTextureAtlas(named: "animals/\(self.type!)_playing")
+        
+        print("Count of atlas is : \(textureAtlas.textureNames.count)")
+        print("Did load atlas : " + self.type! + "_playing")
+        
+        for i in 0..<textureAtlas.textureNames.count {
+            print("Will get image : " + self.type! + "_playing_\(i).png")
+            let frame = textureAtlas.textureNamed(self.type! + "_playing_\(i).png")
+            frames.append(frame)
+        }
+        
+        print("After the loop")
+        
+        if textureAtlas.textureNames.count != 0 {
+            let animate = SKAction.animate(with: frames, timePerFrame: 0.1)
+            let forever = SKAction.repeatForever(animate)
+            self.run(forever)
+        }
+
+        print("end of startAnimation()")
+    }
+    
+    public func stopAnimate() {
+        
+    }
+    
+    
 }
 

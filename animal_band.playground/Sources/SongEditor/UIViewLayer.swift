@@ -18,9 +18,21 @@ public class UIViewLayer: UIView {
     
     
     
+    
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for _ in touches {
+            self.isHidden = true
+        }
+    }
+    
+    
+    
+    
     private func addElements() {
         /* Add Background Layer */
         self.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
     }
+        
+    
     
 }

@@ -93,7 +93,7 @@ public class SongSelectionView: UIViewLayer, UITableViewDelegate, UITableViewDat
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        currentSong = (tableView.cellForRow(at: indexPath) as! SongTableViewCell).song
+        currentSong = uglify(songName: (tableView.cellForRow(at: indexPath) as! SongTableViewCell).song)
         
         tableView.reloadData()
         //tableView.deselectRow(at: indexPath, animated: true)

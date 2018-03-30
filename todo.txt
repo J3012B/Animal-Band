@@ -1,8 +1,6 @@
 Animal Band
 
 - get sound files for single notes of different instruments
-	* piano
-	* guitar
 	* drums
 	* trumpet?
 	* violin?
@@ -10,13 +8,9 @@ Animal Band
 
 - setup scene
 	* bar
-		-> draw wall
-		-> draw stage
 		-> draw/animate audience
 
 - animals
-	X cat -> piano
-	X dog -> guitar
 	* frog -> drums
 	* turtle -> cello
 	*

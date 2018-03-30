@@ -29,6 +29,8 @@ public struct Song {
                     self.beats = info["beats"]!
                     self.rythm = info["tempo"]!
                     
+                    //print("Count of instruments is \(instruments.count)")
+                    
                     for (instrument, notes) in instruments {
                         //print(instrument + " plays the following notes:")
                         
@@ -72,6 +74,8 @@ public struct Song {
                 self.instruments = [String : [Note]]()
                 self.length = 0
             }
+        } else {
+            print("Song.init >> Couldn't find file path for song")
         }
     }
     

@@ -4,7 +4,7 @@ import AVFoundation
 
 public class BandScene: SKScene {
     
-    var currentSong: Song?
+    var songObject: Song?
     var currentTimeStep: Int = 0
     var notePlayers: [NotePlayer] = []
     
@@ -20,7 +20,7 @@ public class BandScene: SKScene {
         let containerLength = CGFloat(min(Float(size.width), Float(size.height)))
         containerSize = CGSize(width: containerLength, height: containerLength)
         
-        loadSong(filePath: "songs/alle_meine_entchen")
+        loadSong()
         prepareAudio()
     }
     
@@ -39,10 +39,9 @@ public class BandScene: SKScene {
      ============================== SONGS ==============================
      */
     
-    private func loadSong(filePath: String) {
-        self.currentSong = Song(filePath: filePath)
-        
-        print("BandScene.loadSong >> Loaded song with path '\(filePath)'")
+    private func loadSong() {
+        print("Current Song, which will be played is: " + currentSong)
+        self.songObject = Song(filePath: "songs/" + currentSong)
     }
     
     /*
@@ -50,19 +49,45 @@ public class BandScene: SKScene {
      ============================== BAND ===============================
      */
     
+    private func pauseButtonPushed() {
+        print("Pause song")
+    }
+    
+    private func playButtonPushed() {
+        loadSong()
+        prepareAudio()
+        playSong()
+    }
+    
     private func prepareAudio() {
-        //player = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "sounds/piano/c2", withExtension: "mp3")!)
-        //player?.prepareToPlay()
-        
-        for player in notePlayers {
-            player.player.prepareToPlay()
+        if self.songObject != nil {
+            // Iterate through all instruments
+            for (instrument, notes) in self.songObject!.instruments {
+                // Iterate through all notes
+                for note in notes {
+                    do {
+                        let filePath = "sounds/\(instrument)/\(note.pitch!)\(note.octave!)"
+                        
+                        // Create Audio Player for each note
+                        if let notePlayerPath = Bundle.main.url(forResource: filePath, withExtension: "mp3") {
+                            let newNotePlayer = NotePlayer(player: try AVAudioPlayer(contentsOf: notePlayerPath), timeToPlay: note.time)
+                            newNotePlayer.player.volume = 0.7
+                            newNotePlayer.player.prepareToPlay()
+                            
+                            self.notePlayers += [newNotePlayer]
+                        }
+                    } catch {
+                        print("BandScene.playSong >> Could not create note player")
+                    }
+                }
+            }
         }
     }
     
-    private func playSong() {
-        if self.currentSong != nil {
-            
-            for (instrument, notes) in self.currentSong!.instruments {
+    private func playSong() {/*
+        if self.songObject != nil {
+         
+            for (instrument, notes) in self.songObject!.instruments {
                 //print(instrument)
                 
                 for note in notes {
@@ -77,28 +102,31 @@ public class BandScene: SKScene {
                             
                             self.notePlayers += [newNotePlayer]
                             
-                            print("Created new note player")
+                            //print("Created new note player")
                         }
                     } catch {
                         print("BandScene.playSong >> Could not create note player")
                     }
                 }
             }
-            
-            _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(playTimeStep), userInfo: nil, repeats: false)
-
+            */
+        
+        for animal in self.animals {
+            animal.startAnimation()
         }
+        _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(playTimeStep), userInfo: nil, repeats: false)
+
+        /*}*/
     }
     
     @objc private func playTimeStep(aTimer: Timer) {
-        print("Current Time Step is: \(self.currentTimeStep)")
         
         // calculate length of song
         var songIsOver = false
         var notesPlayed = 0
         var notePlayersToPlay = [NotePlayer]()
         
-        if self.currentTimeStep >= self.currentSong!.length {
+        if self.currentTimeStep >= self.songObject!.length {
             songIsOver = true
         }
         
@@ -123,9 +151,7 @@ public class BandScene: SKScene {
             
             self.currentTimeStep += 1
             
-            let sixteenths = Double(15) / Double(self.currentSong!.tempo)
-            print("Played \(notesPlayed) notes")
-            print("Length of 16th is: \(self.currentSong!.tempo)")
+            let sixteenths = Double(15) / Double(self.songObject!.tempo)
             _ = Timer.scheduledTimer(timeInterval: sixteenths, target: self, selector: #selector(playTimeStep), userInfo: nil, repeats: false)
         }
     }
@@ -317,11 +343,11 @@ public class BandScene: SKScene {
     
     private func addAnimals() {
         // Piano Cat
-        let animalPianoCat = Animal(imageNamed: "piano_cat.png", sceneSize: frame.size)
+        let animalPianoCat = Animal(type: "cat", sceneSize: frame.size)
         animalPianoCat.position = CGPoint(x: stage.frame.width * 0.3, y: stage.frame.height * 0.7)
         
         // Guitar Dog
-        let animalGuitarDog = Animal(imageNamed: "guitar_dog.png", sceneSize: frame.size)
+        let animalGuitarDog = Animal(type: "dog", sceneSize: frame.size)
         animalGuitarDog.position = CGPoint(x: stage.frame.width * 0.8, y: stage.frame.height * 0.5)
         
         // Cello Turtle
@@ -345,20 +371,26 @@ public class BandScene: SKScene {
         let menuWidth = frame.width * 0.9
         let menuHeight = frame.height * 0.1
         let menuMargin = (frame.width - menuWidth) * 0.5
-        let menu = SKSpriteNode(color: UIColor.green, size: CGSize(width: menuWidth, height: menuHeight))
+        let menu = SKSpriteNode(color: UIColor.clear, size: CGSize(width: menuWidth, height: menuHeight))
         menu.position = CGPoint(x: menuMargin, y: frame.height - menuMargin)
         menu.anchorPoint = CGPoint(x: 0.0, y: 1.0)
         menu.zPosition = 100
         
+        /* Pause Button */
+        let pauseBtn = SKButton(defaultButtonImage: "Menu/Pause_Button/pauseButton_default.png", activeButtonImage: "Menu/Pause_Button/pauseButton_active.png", buttonAction: pauseButtonPushed)
+        pauseBtn.scaleTo(newHeight: menu.frame.height)
+        pauseBtn.position = CGPoint(x: menu.frame.width, y: 0.0)
+        pauseBtn.anchorPoint = CGPoint(x: 1.0, y: 1.0)
+        
         /* Play Button */
-        let playBtn = SKButton(defaultButtonImage: "Menu/Play_Button/playButton_default.png", activeButtonImage: "Menu/Play_Button/playButton_active.png", buttonAction: playSong)
+        let playBtn = SKButton(defaultButtonImage: "Menu/Play_Button/playButton_default.png", activeButtonImage: "Menu/Play_Button/playButton_active.png", buttonAction: playButtonPushed)
         playBtn.scaleTo(newHeight: menu.frame.height)
-        playBtn.position = CGPoint(x: menu.frame.width, y: 0.0)
+        playBtn.position = CGPoint(x: pauseBtn.frame.minX - pauseBtn.frame.width * 0.5, y: 0.0)
         playBtn.anchorPoint = CGPoint(x: 1.0, y: 1.0)
-        playBtn.color = UIColor.yellow
         
         
         menu.addChild(playBtn)
+        menu.addChild(pauseBtn)
         
         self.addChild(menu)
     }
