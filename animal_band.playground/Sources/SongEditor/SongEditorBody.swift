@@ -82,34 +82,33 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     }
     
     private func noteViewPushed(note: Note, addToList: Bool) {
-        print("SongEditorBody.noteViewPushed >> note view pushed is '\(note.pitch!)\(note.octave!) at \(note.time!)' and will be added to list \(addToList)")
-        
-        print("note is \(note)")
+        //print("SongEditorBody.noteViewPushed >> note view pushed is '\(note.pitch!)\(note.octave!) at \(note.time!)' and will be added to list \(addToList)")
+        //print("note is \(note)")
         
         var noteList = self.songObject!.instruments[self.instrument!.lowercased()]!
         
         if addToList {
             noteList.append(note)
             
-            print("SongEditorBody.noteViewPushed >> note '\(note.pitch)\(note.octave) at \(note.time)' was added to array")
+            //print("SongEditorBody.noteViewPushed >> note '\(note.pitch)\(note.octave) at \(note.time)' was added to array")
         } else {
-            print("SongEditorBody.noteViewPushed >> note will be pushed to array")
+            //print("SongEditorBody.noteViewPushed >> note will be pushed to array")
             
-            print("**** there are \(noteList.count) notes")
+            //print("**** there are \(noteList.count) notes")
             
             for i in 0..<noteList.count {
                 let current = noteList[i]
             
                 if current.pitch! == note.pitch! && current.octave! == note.octave! && current.time! == note.time! {
-                    print("current is \(current)")
+                    //print("current is \(current)")
                     noteList.remove(at: i)
                     break
                 }
             }
             
-            print("**** now there are \(noteList.count) notes")
+            //print("**** now there are \(noteList.count) notes")
             
-            print("SongEditorBody.noteViewPushed >> note '\(note.pitch)\(note.octave) at \(note.time)' was removed from array")
+            //print("SongEditorBody.noteViewPushed >> note '\(note.pitch)\(note.octave) at \(note.time)' was removed from array")
         }
         
         self.songObject!.instruments[self.instrument!.lowercased()] = noteList

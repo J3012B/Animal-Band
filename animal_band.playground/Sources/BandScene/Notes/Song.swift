@@ -87,7 +87,43 @@ public struct Song {
         self.rythm = 4
         self.instruments = [String : [Note]]()
     }*/
+    
+    
+    public func save(to fileName: String) {
+        /*
+        var dictonary : [String : Any] =
+            [
+                "info":
+                    ["tempo": self.tempo!,
+                     "beats": self.beats!,
+                     "rythm": self.rythm!
+                ],
+                "instruments": self.instruments!
+        ]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+            
+            print("JSON data: \n\(jsonData)")
+            
+            let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
+            // here "decoded" is of type `Any`, decoded from JSON data
+            
+            // you can now cast it with the right type
+            if let dictFromJSON = decoded as? [String:String] {
+                // use dictFromJSON
+            }
+        } catch {
+            print(error.localizedDescription)
+        }*/
+        
+    }
+    
+    
+    
 }
+
+
 
 /*
     SAMPLE JSON
