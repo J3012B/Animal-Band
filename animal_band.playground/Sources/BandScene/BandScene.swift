@@ -13,6 +13,10 @@ public class BandScene: SKScene {
     var containerSize: CGSize!
     
     var stage: SKSpriteNode!
+    private var pauseBtn: SKButton!
+    private var playBtn: SKButton!
+    
+    private var songIsOver = false
     
     public override init(size: CGSize) {
         super.init(size: size)
@@ -50,7 +54,7 @@ public class BandScene: SKScene {
      */
     
     private func pauseButtonPushed() {
-        print("Pause song")
+        self.songIsOver = true
     }
     
     private func playButtonPushed() {
@@ -84,56 +88,32 @@ public class BandScene: SKScene {
         }
     }
     
-    private func playSong() {/*
-        if self.songObject != nil {
-         
-            for (instrument, notes) in self.songObject!.instruments {
-                //print(instrument)
-                
-                for note in notes {
-                    //print(instrument + " plays a " + note.pitch! + "\(note.octave!) at \(note.time!)")
-                    
-                    do {
-                        let filePath = "sounds/\(instrument)/\(note.pitch!)\(note.octave!)"
-                        
-                        if let notePlayerPath = Bundle.main.url(forResource: filePath, withExtension: "mp3") {
-                            let newNotePlayer = NotePlayer(player: try AVAudioPlayer(contentsOf: notePlayerPath), timeToPlay: note.time)
-                            newNotePlayer.player.volume = 0.7
-                            
-                            self.notePlayers += [newNotePlayer]
-                            
-                            //print("Created new note player")
-                        }
-                    } catch {
-                        print("BandScene.playSong >> Could not create note player")
-                    }
-                }
-            }
-            */
+    private func playSong() {
         
         for animal in self.animals {
             animal.startAnimation()
         }
+        
+        self.songIsOver = false
+        self.playBtn.isEnabled = false
+        
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(playTimeStep), userInfo: nil, repeats: false)
 
-        /*}*/
     }
     
     @objc private func playTimeStep(aTimer: Timer) {
         
         // calculate length of song
-        var songIsOver = false
         var notesPlayed = 0
         var notePlayersToPlay = [NotePlayer]()
         
         if self.currentTimeStep >= self.songObject!.length {
-            songIsOver = true
+            self.songIsOver = true
         }
         
-        if songIsOver {
+        if self.songIsOver {
+            endConcert()
             // reset everything here
-            self.currentTimeStep = 0
-            self.notePlayers = []
         } else {
             for notePlayer in self.notePlayers {
                 if notePlayer.timeToPlay == self.currentTimeStep {
@@ -154,6 +134,13 @@ public class BandScene: SKScene {
             let sixteenths = Double(15) / Double(self.songObject!.tempo)
             _ = Timer.scheduledTimer(timeInterval: sixteenths, target: self, selector: #selector(playTimeStep), userInfo: nil, repeats: false)
         }
+    }
+    
+    private func endConcert() {
+        self.songIsOver = true
+        self.currentTimeStep = 0
+        self.notePlayers = []
+        self.playBtn.isEnabled = true
     }
 
     
@@ -314,7 +301,7 @@ public class BandScene: SKScene {
     }
     
     private func addGround() {
-        let groundTex = SKTexture(imageNamed: "room/ground.png")
+        let groundTex = SKTexture(imageNamed: "room/audience.png")
         let ground = SKSpriteNode(color: UIColor.blue, size: CGSize(width: frame.width, height: frame.height * 0.25))
         ground.position = CGPoint(x: 0, y: 0)
         ground.anchorPoint = CGPoint(x: 0, y: 0)
@@ -377,13 +364,13 @@ public class BandScene: SKScene {
         menu.zPosition = 100
         
         /* Pause Button */
-        let pauseBtn = SKButton(defaultButtonImage: "Menu/Pause_Button/pauseButton_default.png", activeButtonImage: "Menu/Pause_Button/pauseButton_active.png", buttonAction: pauseButtonPushed)
+        pauseBtn = SKButton(defaultButtonImage: "Menu/Pause_Button/pauseButton_default.png", activeButtonImage: "Menu/Pause_Button/pauseButton_active.png", buttonAction: pauseButtonPushed)
         pauseBtn.scaleTo(newHeight: menu.frame.height)
         pauseBtn.position = CGPoint(x: menu.frame.width, y: 0.0)
         pauseBtn.anchorPoint = CGPoint(x: 1.0, y: 1.0)
         
         /* Play Button */
-        let playBtn = SKButton(defaultButtonImage: "Menu/Play_Button/playButton_default.png", activeButtonImage: "Menu/Play_Button/playButton_active.png", buttonAction: playButtonPushed)
+        playBtn = SKButton(defaultButtonImage: "Menu/Play_Button/playButton_default.png", activeButtonImage: "Menu/Play_Button/playButton_active.png", buttonAction: playButtonPushed)
         playBtn.scaleTo(newHeight: menu.frame.height)
         playBtn.position = CGPoint(x: pauseBtn.frame.minX - pauseBtn.frame.width * 0.5, y: 0.0)
         playBtn.anchorPoint = CGPoint(x: 1.0, y: 1.0)

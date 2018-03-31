@@ -6,6 +6,8 @@ public class SKButton: SKSpriteNode {
     private var activeButton: SKSpriteNode
     private var action: () -> Void
     
+    public var isEnabled: Bool = true
+    
     public init(defaultButtonImage: String, activeButtonImage: String, buttonAction: @escaping () -> Void) {
         defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
         activeButton = SKSpriteNode(imageNamed: activeButtonImage)
@@ -54,7 +56,7 @@ public class SKButton: SKSpriteNode {
         let touch: UITouch = Array(touches)[0] as UITouch
         let location: CGPoint = touch.location(in: self)
         
-        if defaultButton.contains(location) {
+        if defaultButton.contains(location) && self.isEnabled {
             action()
         }
         

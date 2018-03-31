@@ -36,26 +36,26 @@ public class Animal: SKSpriteNode {
     
     public func startAnimation() {
         var frames = [SKTexture]()
-        let textureAtlas = SKTextureAtlas(named: "animals/\(self.type!)_playing")
+        let textureAtlas = SKTextureAtlas(named: "animals/\(self.type!)_playing.atlas")
         
         print("Count of atlas is : \(textureAtlas.textureNames.count)")
         print("Did load atlas : " + self.type! + "_playing")
         
         for i in 0..<textureAtlas.textureNames.count {
-            print("Will get image : " + self.type! + "_playing_\(i).png")
+            //print("Will get image : " + self.type! + "_playing_\(i).png")
             let frame = textureAtlas.textureNamed(self.type! + "_playing_\(i).png")
             frames.append(frame)
         }
         
-        print("After the loop")
+        //print("After the loop")
         
         if textureAtlas.textureNames.count != 0 {
-            let animate = SKAction.animate(with: frames, timePerFrame: 0.1)
+            let animate = SKAction.animate(with: frames, timePerFrame: 0.3)
             let forever = SKAction.repeatForever(animate)
             self.run(forever)
         }
 
-        print("end of startAnimation()")
+        //print("end of startAnimation()")
     }
     
     public func stopAnimate() {
