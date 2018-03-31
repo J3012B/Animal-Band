@@ -43,6 +43,7 @@ public class SongEditorView: UIView {
     
     @objc private func loadButtonPushed() {
         self.songSelectionView.show()
+        self.songSelectionView.songEditorView = self
     }
     
     @objc private func newButtonPushed() {
