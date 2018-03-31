@@ -6,8 +6,8 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     private var barView: UIScrollView! // shows the bars
     private var noteField: NoteField! // shows the actual notes
     
-    private var songObject: Song!
-    private var instrument: String! // instrument pattern shown
+    private var songObject: Song! // song object of currently shown song
+    public var instrument: String! // instrument pattern shown
     private var range: Int! // range of instrument
     private var songLength: Int! // length of the song
 
@@ -73,12 +73,46 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     //
     private func getPosition(note: Note) -> Int {
         let positionOfToneInScale = Int(self.notesUgly.index(of: note.pitch)!) // position of 'c_s_' f.i.
-        let positionInToneScale = (self.octaveMaxDict[self.instrument]! - note.octave + 1) * self.notesUgly.count - positionOfToneInScale
+        let positionInToneScale = (self.octaveMaxDict[self.instrument]! - note.octave + 1) * self.notesUgly.count - positionOfToneInScale - 1
         let position = note.time * self.range + positionInToneScale
         
         //print("SongEditorBody.getPosition >> the position of the note \(note) is \(position)")
         
         return position
+    }
+    
+    private func noteViewPushed(note: Note, addToList: Bool) {
+        print("SongEditorBody.noteViewPushed >> note view pushed is '\(note.pitch!)\(note.octave!) at \(note.time!)' and will be added to list \(addToList)")
+        
+        print("note is \(note)")
+        
+        var noteList = self.songObject!.instruments[self.instrument!.lowercased()]!
+        
+        if addToList {
+            noteList.append(note)
+            
+            print("SongEditorBody.noteViewPushed >> note '\(note.pitch)\(note.octave) at \(note.time)' was added to array")
+        } else {
+            print("SongEditorBody.noteViewPushed >> note will be pushed to array")
+            
+            print("**** there are \(noteList.count) notes")
+            
+            for i in 0..<noteList.count {
+                let current = noteList[i]
+            
+                if current.pitch! == note.pitch! && current.octave! == note.octave! && current.time! == note.time! {
+                    print("current is \(current)")
+                    noteList.remove(at: i)
+                    break
+                }
+            }
+            
+            print("**** now there are \(noteList.count) notes")
+            
+            print("SongEditorBody.noteViewPushed >> note '\(note.pitch)\(note.octave) at \(note.time)' was removed from array")
+        }
+        
+        self.songObject!.instruments[self.instrument!.lowercased()] = noteList
     }
     
     /*
@@ -102,11 +136,15 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
      ============================= Reload ==============================
      */
     
+    public func setSong(songName: String) {
+        self.songObject = Song(filePath: "songs/" + songName)
+    }
+    
     public func reload(instrument: String) {
         self.instrument = instrument
         self.range = getRangeOf(instrument: instrument)
         self.songLength = getBarCount() * 16
-        self.songObject = Song(filePath: "songs/" + currentSong)
+        //self.songObject = Song(filePath: "songs/" + currentSong)
         
         self.reloadNoteField()
         self.reloadScaleView()
@@ -130,6 +168,9 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
                 let noteViewFrame = CGRect(x: CGFloat(j) * noteViewWidth, y: CGFloat(i) * noteViewHeight, width: noteViewWidth, height: noteViewHeight)
                 let noteView = NoteView(frame: noteViewFrame)
                 noteView.note = getNote(position: i, instrument: self.instrument, time: j)
+                noteView.pushed = { (note, addToList) in
+                    self.noteViewPushed(note: note, addToList: addToList)
+                }
                 
                 //print("SongEditorBody.reloadNoteField >> Added note \(noteView.note) to note view")
                 
@@ -209,7 +250,7 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
             }
             print("SongEditorBody.loadNotes >> did load notes")
         } else {
-            print("*** SongEditorBody.loadNotes >> Couldn't load notes with instrument '\(self.instrument!)'")
+            print("*** SongEditorBody.loadNotes >> Couldn't load notes for instrument '\(self.instrument!)'")
         }
         
     }

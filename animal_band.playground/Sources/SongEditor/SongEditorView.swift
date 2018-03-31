@@ -4,7 +4,7 @@ public class SongEditorView: UIView {
     
     private var menuBar: UIView!
     private var instrumentPicker: Picker!
-    private var body: SongEditorBody!
+    public var body: SongEditorBody!
     
     private var songSelectionView: SongSelectionView!
     
@@ -43,7 +43,6 @@ public class SongEditorView: UIView {
     
     @objc private func loadButtonPushed() {
         self.songSelectionView.show()
-        self.songSelectionView.songEditorView = self
     }
     
     @objc private func newButtonPushed() {
@@ -130,6 +129,7 @@ public class SongEditorView: UIView {
     private func addViews() {
         /* Song Selection View */
         songSelectionView = SongSelectionView(frame: CGRect(x: 0.0, y: 0.0, width: frame.width, height: frame.height))
+        songSelectionView.songEditorView = self
         
         /* Song Create View */
         

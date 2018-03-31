@@ -2,8 +2,10 @@ import UIKit
 
 public class NoteView: UIView {
     
-    let colorUnselected: UIColor = UIColor(hex: "#2C3E50")
-    let colorSelected: UIColor = UIColor(hex: "#27AE60")
+    private let colorUnselected: UIColor = UIColor(hex: "#2C3E50")
+    private let colorSelected: UIColor = UIColor(hex: "#27AE60")
+    
+    public var pushed: ((Note, Bool) -> ())?
     
     var isSelected: Bool = false {
         didSet {
@@ -47,6 +49,12 @@ public class NoteView: UIView {
             self.backgroundColor = colorSelected
         }
         self.isSelected = !self.isSelected
+        
+        if self.pushed != nil && self.note != nil {
+            self.pushed!(self.note!, self.isSelected)
+        } else {
+            print("Note.toggle >> didn't or couldn't call closure")
+        }
     }
     
     

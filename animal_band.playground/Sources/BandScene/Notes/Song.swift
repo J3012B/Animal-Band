@@ -34,6 +34,10 @@ public struct Song {
                     for (instrument, notes) in instruments {
                         //print(instrument + " plays the following notes:")
                         
+                        if notes.count == 0 {
+                            self.instruments[instrument] = [Note]()
+                        }
+                        
                         for note in notes {
                             let pitch = note["pitch"] as! String
                             let octave = note["octave"] as! Int
@@ -55,8 +59,6 @@ public struct Song {
                     }
                     
                     self.length += 8
-                    
-                    //print(self)
                     
                 } else {
                     print("Song.init >> Could not load song from json")

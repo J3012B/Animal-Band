@@ -5,6 +5,7 @@ import UIKit
 public class SongSelectionView: UIViewLayer, UITableViewDelegate, UITableViewDataSource {
     
     var tableView: UITableView!
+    var songEditorView: SongEditorView?
     
     let cellIdentifier = "cell"
     
@@ -94,6 +95,11 @@ public class SongSelectionView: UIViewLayer, UITableViewDelegate, UITableViewDat
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         currentSong = uglify(songName: (tableView.cellForRow(at: indexPath) as! SongTableViewCell).song)
+        
+        if self.songEditorView != nil {
+            self.songEditorView!.body.setSong(songName: currentSong)
+            self.songEditorView!.body.reload(instrument: songEditorView!.body.instrument)
+        }
         
         tableView.reloadData()
         //tableView.deselectRow(at: indexPath, animated: true)
