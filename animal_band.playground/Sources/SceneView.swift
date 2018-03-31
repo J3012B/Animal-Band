@@ -16,7 +16,7 @@ public class SceneView: SKView {
         
         self.presentScene(self.bandScene)
         
-        self.showsNodeCount = true
+        self.showsNodeCount = false
     }
     
     

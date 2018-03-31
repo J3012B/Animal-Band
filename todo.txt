@@ -6,9 +6,7 @@ Animal Band
 - setup scene
 	* bar
 		-> draw/animate audience
-		-> disable editor when song is playing
 		-> music notes fly away while playing
-		-> pause button functionality
 
 - editor 
 	* create new song

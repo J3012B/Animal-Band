@@ -6,7 +6,7 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     private var barView: UIScrollView! // shows the bars
     private var noteField: NoteField! // shows the actual notes
     
-    private var songObject: Song! // song object of currently shown song
+    public var songObject: Song! // song object of currently shown song
     public var instrument: String! // instrument pattern shown
     private var range: Int! // range of instrument
     private var songLength: Int! // length of the song

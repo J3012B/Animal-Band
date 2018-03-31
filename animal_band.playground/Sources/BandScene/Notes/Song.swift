@@ -1,4 +1,5 @@
 import Foundation
+import PlaygroundSupport
 
 public struct Song {
     public var tempo = 100
@@ -27,7 +28,7 @@ public struct Song {
                     
                     self.tempo = info["tempo"]!
                     self.beats = info["beats"]!
-                    self.rythm = info["tempo"]!
+                    self.rythm = info["rythm"]!
                     
                     //print("Count of instruments is \(instruments.count)")
                     
@@ -76,50 +77,107 @@ public struct Song {
                 self.instruments = [String : [Note]]()
                 self.length = 0
             }
+        } else if false {
+            
         } else {
             print("Song.init >> Couldn't find file path for song")
         }
     }
     
-    /*private mutating func fill() {
-        self.tempo = 100
-        self.beats = 4
-        self.rythm = 4
-        self.instruments = [String : [Note]]()
-    }*/
+
     
+    
+    
+    private func getStringifiedSong() -> String {
+        var instrumentsJsonString = "{"
+        
+        for (instrument, notes) in self.instruments {
+            var instrumentString =
+            """
+            "\(instrument)": [
+            """
+            
+            for note in notes {
+                instrumentString +=
+                """
+                {
+                    "pitch": \(note.pitch!),
+                    "octave": \(note.octave!),
+                    "time": \(note.time!)
+                },
+                """
+            }
+            if notes.count > 0 {
+                instrumentString = String(instrumentString.dropLast())
+            }
+            instrumentString += "],"
+            
+            instrumentsJsonString += instrumentString
+        }
+        instrumentsJsonString = String(instrumentsJsonString.dropLast())
+        
+        instrumentsJsonString += "}"
+        
+        
+        let wholeString =
+"""
+{
+     "info": {
+         "tempo": \(self.tempo),
+         "beats": \(self.beats),
+         "rythm": \(self.rythm)
+     },
+     "instruments": \(instrumentsJsonString)
+}
+"""
+        
+        
+        return wholeString
+    }
     
     public func save(to fileName: String) {
-        /*
-        var dictonary : [String : Any] =
-            [
-                "info":
-                    ["tempo": self.tempo!,
-                     "beats": self.beats!,
-                     "rythm": self.rythm!
-                ],
-                "instruments": self.instruments!
-        ]
+        // 1. file existiert noch nicht
+        //  b. file gibt es noch nicht -> speichern
+        // 2. file existiert
+        
+        let defaultSongNames = loadFileNamesOfDefaultSongs()
+        
+        // check if song name already is given in the defaults song files (if yes -> return)
+        if defaultSongNames.contains(fileName) {
+            print("You can't save changes in '\(prettify(songName: fileName))', because it's one of the default song files.")
+            return
+        }
+        
+        // stringify song
+        let fileContent = getStringifiedSong()
+        
+        print("will try to save: \n\(fileContent)")
+        
+        let fileName = playgroundSharedDataDirectory.appendingPathComponent(fileName + ".json")
         
         do {
-            let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
-            
-            print("JSON data: \n\(jsonData)")
-            
-            let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
-            // here "decoded" is of type `Any`, decoded from JSON data
-            
-            // you can now cast it with the right type
-            if let dictFromJSON = decoded as? [String:String] {
-                // use dictFromJSON
-            }
+            try fileContent.write(to: fileName, atomically: true, encoding: String.Encoding.utf8)
         } catch {
-            print(error.localizedDescription)
-        }*/
+            print("Song.save >> could not save song file with name '\(fileName).json'")
+        }
         
     }
     
-    
+    private func loadFileNamesOfDefaultSongs() -> [String] {
+        let defaultSongNamePaths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: "songs/")
+        var defaultSongNames = [String]()
+        
+        
+        for defaultSongPath in defaultSongNamePaths {
+            let songPathArray = defaultSongPath.split(separator: "/") // array with path components
+            let withExtension = String(songPathArray[songPathArray.count - 1]) // only song file name (with extension)
+            let defaultSongName = String(withExtension.split(separator: ".")[0])
+            
+            defaultSongNames.append(defaultSongName)
+        }
+        
+        return defaultSongNames
+    }
     
 }
 
@@ -128,55 +186,8 @@ public struct Song {
 /*
     SAMPLE JSON
  
-{
-    "info": {
-        "tempo": 100,
-        "beats": 4,
-        "rythm": 4
-    },
-    "instruments": {
-        "piano": [
-        {
-        "pitch": "c",
-        "octave": 4,
-        "time": 0
-        },
-        {
-        "pitch": "d",
-        "octave": 4,
-        "time": 4
-        },
-        {
-        "pitch": "e",
-        "octave": 4,
-        "time": 8
-        },
-        {
-        "pitch": "f",
-        "octave": 4,
-        "time": 12
-        },
-        {
-        "pitch": "g",
-        "octave": 4,
-        "time": 16
-        },
-        {
-        "pitch": "g",
-        "octave": 4,
-        "time": 24
-        }
-        ],
-        "guitar": [
-        
-        ],
-        "drums": [
-        
-        ],
-        "cello": [
-        
-        ]
-    }
-}
+ 
+ 
+
  */
 
