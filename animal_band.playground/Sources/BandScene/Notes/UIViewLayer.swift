@@ -4,6 +4,8 @@ import UIKit
 
 public class UIViewLayer: UIView {
     
+    public var userCanRemove: Bool = true
+    
     /*  INITIALIZATION  */
     
     public override init(frame: CGRect) {
@@ -21,7 +23,9 @@ public class UIViewLayer: UIView {
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for _ in touches {
-            self.isHidden = true
+            if userCanRemove {
+                self.isHidden = true
+            }
         }
     }
     

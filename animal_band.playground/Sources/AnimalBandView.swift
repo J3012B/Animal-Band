@@ -29,6 +29,9 @@ public class AnimalBandView: UIView {
         let sceneView = SceneView(frame: sceneViewFrame)
         
         self.addSubview(sceneView)
+        
+        songEditorView.bandScene = sceneView.bandScene
+        sceneView.bandScene.songEditorView = songEditorView
     }
 }
 

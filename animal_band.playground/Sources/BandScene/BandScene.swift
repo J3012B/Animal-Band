@@ -4,6 +4,8 @@ import AVFoundation
 
 public class BandScene: SKScene {
     
+    public var songEditorView: SongEditorView?
+    
     var songObject: Song?
     var currentTimeStep: Int = 0
     var notePlayers: [NotePlayer] = []
@@ -61,6 +63,8 @@ public class BandScene: SKScene {
         loadSong()
         prepareAudio()
         playSong()
+        
+        self.songEditorView!.songIsPlayingView.songStartedPlaying()
     }
     
     private func prepareAudio() {
@@ -141,6 +145,7 @@ public class BandScene: SKScene {
         self.currentTimeStep = 0
         self.notePlayers = []
         self.playBtn.isEnabled = true
+        self.songEditorView!.songIsPlayingView.songEndedPlaying()
     }
 
     

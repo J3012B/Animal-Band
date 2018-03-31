@@ -2,11 +2,13 @@ import UIKit
 
 public class SongEditorView: UIView {
     
+    public var bandScene: BandScene?
     private var menuBar: UIView!
     private var instrumentPicker: Picker!
     public var body: SongEditorBody!
     
-    private var songSelectionView: SongSelectionView!
+    public var songSelectionView: SongSelectionView!
+    public var songIsPlayingView: SongIsPlayingView!
     
     private var currentInstrument: String = "Piano"
     private var songLength: Int = 0
@@ -127,12 +129,19 @@ public class SongEditorView: UIView {
     
     /* VIEWS */
     private func addViews() {
+        /* Song is playing View */
+        songIsPlayingView = SongIsPlayingView(frame: CGRect(x: 0.0, y: 0.0, width: frame.width, height: frame.height))
+        songIsPlayingView.setText("This is the Song Name")
+        songIsPlayingView.userCanRemove = false
+        songIsPlayingView.isHidden = true
+        
         /* Song Selection View */
         songSelectionView = SongSelectionView(frame: CGRect(x: 0.0, y: 0.0, width: frame.width, height: frame.height))
         songSelectionView.songEditorView = self
         
         /* Song Create View */
         
+        self.addSubview(songIsPlayingView)
         self.addSubview(songSelectionView)
     }
     
