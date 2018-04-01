@@ -9,6 +9,7 @@ public class BandScene: SKScene {
     var songObject: Song?
     var currentTimeStep: Int = 0
     var notePlayers: [NotePlayer] = []
+    var applausePlayer: AVAudioPlayer!
     
     var animals = [Animal]()
     
@@ -19,9 +20,12 @@ public class BandScene: SKScene {
     private var playBtn: SKButton!
     
     private var songIsOver = false
+    private var audienceApplauses = true
     
-    public override init(size: CGSize) {
+    public init(size: CGSize, audienceApplauses: Bool) {
         super.init(size: size)
+        
+        self.audienceApplauses = audienceApplauses
         
         let containerLength = CGFloat(min(Float(size.width), Float(size.height)))
         containerSize = CGSize(width: containerLength, height: containerLength)
@@ -38,12 +42,25 @@ public class BandScene: SKScene {
         //loadSong(filePath: "songs/alle_meine_entchen")
         
         addElements()
+        addSounds()
     }
     
     /*
      ===================================================================
      ============================== SONGS ==============================
      */
+    
+    private func addSounds() {
+        let applauseSoundPath = Bundle.main.url(forResource: "applause", withExtension: "mp3")!
+        
+        do {
+            self.applausePlayer = try AVAudioPlayer(contentsOf: applauseSoundPath)
+            self.applausePlayer.prepareToPlay()
+        } catch {
+            print("BandScene.addSonds >> could not create player for applause")
+        }
+        
+    }
     
     private func loadSong() {
         print("Current Song, which will be played is: " + currentSong)
@@ -58,6 +75,7 @@ public class BandScene: SKScene {
     
     private func pauseButtonPushed() {
         self.songIsOver = true
+        self.applausePlayer.stop()
     }
     
     private func playButtonPushed() {
@@ -150,6 +168,14 @@ public class BandScene: SKScene {
         self.notePlayers = []
         self.playBtn.isEnabled = true
         self.songEditorView!.songIsPlayingView.songEndedPlaying()
+        
+        if audienceApplauses {
+            self.applausePlayer.play()
+        }
+        
+        for animal in self.animals {
+            animal.stopAnimate()
+        }
     }
 
     
@@ -347,17 +373,24 @@ public class BandScene: SKScene {
         animalGuitarDog.position = CGPoint(x: stage.frame.width * 0.8, y: stage.frame.height * 0.5)
         
         // Cello Turtle
+        let animalCelloTurtle = Animal(type: "turtle", sceneSize: frame.size)
+        animalCelloTurtle.position = CGPoint(x: stage.frame.width * 0.6, y: stage.frame.height * 0.9)
+        
+        
         
         // Drum Frog
         
         stage.addChild(animalPianoCat)
         stage.addChild(animalGuitarDog)
+        stage.addChild(animalCelloTurtle)
         
         self.animals.append(animalPianoCat)
         self.animals.append(animalGuitarDog)
+        self.animals.append(animalCelloTurtle)
         
         animalPianoCat.updateSize()
         animalGuitarDog.updateSize()
+        animalCelloTurtle.updateSize()
         
         self.updateAnimalOrder()
     }

@@ -5,13 +5,11 @@ Animal Band
 	* bar
 		-> draw/animate audience
 		-> music notes fly away while playing
+- songs
+	* can you feel the love tonight
+	* we are the champions
+	* 
 
-- editor 
-	* bar count text picker
-	* create new song
-		-> delete everything in the current song object
-		-> set current song name to custom chosen one
-		-> create empty song name with this name
 
 - animals
 	* frog -> drums
@@ -21,6 +19,3 @@ Animal Band
 	* animate them
 
 - add extras
-	* audience applauds
-	* spotlight
-	* ...

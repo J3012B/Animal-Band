@@ -2,6 +2,7 @@ import Foundation
 
 
 var currentSong = "alle_meine_entchen"
+var audienceApplauses = true
 
 public func uglify(songName: String) -> String {
     let lowercase = songName.lowercased()

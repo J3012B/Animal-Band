@@ -8,7 +8,7 @@ public class Animal: SKSpriteNode {
     
     public init(type: String, sceneSize: CGSize) {
         // load texture
-        let tex = SKTexture(imageNamed: "Animals/\(type).png")
+        let tex = SKTexture(imageNamed: "animals/\(type).png")
         super.init(texture: tex, color: UIColor.clear, size: tex.size())
         
         self.texture?.filteringMode = .nearest
@@ -35,21 +35,18 @@ public class Animal: SKSpriteNode {
     }
     
     public func startAnimation() {
+        let frameDict = ["cat": 4, "dog": 2, "turtle": 0]
         var frames = [SKTexture]()
-        let textureAtlas = SKTextureAtlas(named: "animals/\(self.type!)_playing.atlas")
         
-        print("Count of atlas is : \(textureAtlas.textureNames.count)")
-        print("Did load atlas : " + self.type! + "_playing")
-        
-        for i in 0..<textureAtlas.textureNames.count {
-            //print("Will get image : " + self.type! + "_playing_\(i).png")
-            let frame = textureAtlas.textureNamed(self.type! + "_playing_\(i).png")
+        for i in 0..<frameDict[self.type!]! {
+            let frame = SKTexture(imageNamed: "animals/\(type!)_playing/\(type!)_playing_\(i).png")
+            frame.filteringMode = .nearest
             frames.append(frame)
         }
         
         //print("After the loop")
         
-        if textureAtlas.textureNames.count != 0 {
+        if frames.count != 0 {
             let animate = SKAction.animate(with: frames, timePerFrame: 0.3)
             let forever = SKAction.repeatForever(animate)
             self.run(forever)
@@ -59,7 +56,9 @@ public class Animal: SKSpriteNode {
     }
     
     public func stopAnimate() {
-        
+        self.removeAllActions()
+        self.texture = SKTexture(imageNamed: "animals/\(type!).png")
+        self.texture!.filteringMode = .nearest
     }
     
     
