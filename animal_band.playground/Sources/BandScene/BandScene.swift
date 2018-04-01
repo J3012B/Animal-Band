@@ -48,6 +48,7 @@ public class BandScene: SKScene {
     private func loadSong() {
         print("Current Song, which will be played is: " + currentSong)
         self.songObject = Song(filePath: currentSong)
+        self.notePlayers = []
     }
     
     /*
@@ -80,6 +81,9 @@ public class BandScene: SKScene {
                         if let notePlayerPath = Bundle.main.url(forResource: filePath, withExtension: "mp3") {
                             let newNotePlayer = NotePlayer(player: try AVAudioPlayer(contentsOf: notePlayerPath), timeToPlay: note.time)
                             newNotePlayer.player.volume = 0.7
+                            if instrument == "drums" {
+                                newNotePlayer.player.volume = 0.9
+                            }
                             newNotePlayer.player.prepareToPlay()
                             
                             self.notePlayers += [newNotePlayer]

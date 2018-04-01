@@ -1,7 +1,5 @@
 Animal Band
 
-- get sound files for single notes of different instruments
-	* cello?
 
 - setup scene
 	* bar
@@ -9,11 +7,11 @@ Animal Band
 		-> music notes fly away while playing
 
 - editor 
-	* load all songs (also from shared folder)
 	* bar count text picker
 	* create new song
 		-> delete everything in the current song object
 		-> set current song name to custom chosen one
+		-> create empty song name with this name
 
 - animals
 	* frog -> drums

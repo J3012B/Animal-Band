@@ -17,9 +17,7 @@ public struct Song {
     
     public init(filePath: String) {
         if let path = Bundle.main.path(forResource: "songs/" + filePath, ofType: "json") {
-            
-            print("Default: " + path)
-            
+                        
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 //print("Song.init >> will try to serialize json")

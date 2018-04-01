@@ -1,0 +1,29 @@
+
+{
+    "info": {
+        "tempo": 150,
+        "beats": 4,
+        "rythm": 4
+    },
+    "instruments": {
+        "piano": [
+                  {
+                  "pitch": "c",
+                  "octave": 4,
+                  "time": 160
+                  }
+                  
+                  
+                  ],
+        "guitar": [
+
+                   ],
+        "drums": [
+        
+        ],
+        "cello": [
+        
+        ]
+    }
+}
+

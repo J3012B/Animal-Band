@@ -13,8 +13,8 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
 
     private let notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
     private let notesUgly = ["c", "c_s_", "d", "d_s_", "e", "f", "f_s_", "g", "g_s_", "a", "a_s_", "b"]
-    private let octaveMaxDict = ["Piano": 6, "Guitar": 3, "Drums": 0, "Cello": 0] // TODO: fill 'drums' and 'cello' with proper values
-    private let ranges = ["Piano" : 72, "Guitar" : 44, "Cello" : 2, "Drums" : 30]
+    private let octaveMaxDict = ["Piano": 6, "Guitar": 3, "Drums": 1, "Cello": 3] // TODO: fill 'drums' and 'cello' with proper values
+    private let ranges = ["Piano" : 72, "Guitar" : 44, "Cello" : 36, "Drums" : 10]
     
     
     /*  INITIALIZATION  */

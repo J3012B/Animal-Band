@@ -9,6 +9,7 @@ public class SongEditorView: UIView {
     
     public var songSelectionView: SongSelectionView!
     public var songIsPlayingView: SongIsPlayingView!
+    public var songCreationView: SongCreationView!
     
     private var currentInstrument: String = "Piano"
     private var songLength: Int = 0
@@ -48,13 +49,13 @@ public class SongEditorView: UIView {
     }
     
     @objc private func newButtonPushed() {
-        print("new")
+        self.songCreationView.show()
     }
     
     @objc private func saveButtonPushed() {
         // save self.body.songObject to json with current Song Name...
         
-        self.body.songObject.save(to: "alle_meine_entchen_3")
+        self.body.songObject.save(to: "let_her_go")
     }
     
     
@@ -142,9 +143,12 @@ public class SongEditorView: UIView {
         songSelectionView.songEditorView = self
         
         /* Song Create View */
+        songCreationView = SongCreationView(frame: songIsPlayingView.frame)
+        songCreationView.isHidden = true
         
         self.addSubview(songIsPlayingView)
         self.addSubview(songSelectionView)
+        self.addSubview(songCreationView)
     }
     
 }
