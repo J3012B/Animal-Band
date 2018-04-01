@@ -9,10 +9,11 @@ Animal Band
 		-> music notes fly away while playing
 
 - editor 
+	* load all songs (also from shared folder)
+	* bar count text picker
 	* create new song
 		-> delete everything in the current song object
 		-> set current song name to custom chosen one
-	* save json files containing songs
 
 - animals
 	* frog -> drums

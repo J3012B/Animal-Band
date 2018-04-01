@@ -23,7 +23,7 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
         super.init(frame: frame)
                 
         self.instrument = instrument
-        self.songObject = Song(filePath: "songs/" + currentSong)
+        self.songObject = Song(filePath: currentSong)
         
         self.addUI()
         self.reload(instrument: self.instrument)
@@ -136,14 +136,13 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
      */
     
     public func setSong(songName: String) {
-        self.songObject = Song(filePath: "songs/" + songName)
+        self.songObject = Song(filePath: songName)
     }
     
     public func reload(instrument: String) {
         self.instrument = instrument
         self.range = getRangeOf(instrument: instrument)
         self.songLength = getBarCount() * 16
-        //self.songObject = Song(filePath: "songs/" + currentSong)
         
         self.reloadNoteField()
         self.reloadScaleView()

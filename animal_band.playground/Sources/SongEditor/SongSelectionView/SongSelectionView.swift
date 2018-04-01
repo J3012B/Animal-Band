@@ -1,4 +1,5 @@
 import UIKit
+import PlaygroundSupport
 
 /* Menu, from which you can pick song jsons from the song directory */
 
@@ -47,15 +48,38 @@ public class SongSelectionView: UIViewLayer, UITableViewDelegate, UITableViewDat
      */
     
     private func loadSongNames() {
-        //let fileManager = FileManager.default
-        let songPaths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: "songs/")
+        // load song names in resources folder
+        let songPaths1 = Bundle.main.paths(forResourcesOfType: "json", inDirectory: "songs/")
         
-        for songPath in songPaths {
+        for songPath in songPaths1 {
             let songPathArray = songPath.split(separator: "/") // array with path components
             let uglySongName = songPathArray[songPathArray.count - 1] // only song file name (with extension)
             let prettySongName = prettify(songName: String(uglySongName)) // prettified song name
             
             self.songNames.append(prettySongName)
+        }
+        
+        // load song names in shared folder
+        let fileManager = FileManager.default
+        
+        // Get contents in directory: '.' (current one)
+        
+        do {
+            let files = try fileManager.contentsOfDirectory(atPath: playgroundSharedDataDirectory.path)
+            
+            for withExtension in files {
+                let songName = withExtension.split(separator: ".")[0]
+                let prettySongName = prettify(songName: String(songName))
+                
+                if withExtension.split(separator: ".").count > 1 {
+                    if withExtension.split(separator: ".")[1] == "json" {
+                        self.songNames.append(prettySongName)
+                    }
+                }
+            }
+        }
+        catch let error as NSError {
+            print("SongSelectionView.loadSongNames >> something went wrong while loading from Shared Folder: \(error)")
         }
         
         self.songNames = self.songNames.sorted { $0 < $1 }

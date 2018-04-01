@@ -16,7 +16,10 @@ public struct Song {
     }
     
     public init(filePath: String) {
-        if let path = Bundle.main.path(forResource: filePath, ofType: "json") {
+        if let path = Bundle.main.path(forResource: "songs/" + filePath, ofType: "json") {
+            
+            print("Default: " + path)
+            
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 //print("Song.init >> will try to serialize json")
@@ -77,10 +80,66 @@ public struct Song {
                 self.instruments = [String : [Note]]()
                 self.length = 0
             }
-        } else if false {
-            
         } else {
-            print("Song.init >> Couldn't find file path for song")
+            let path = playgroundSharedDataDirectory.appendingPathComponent(filePath + ".json")
+                        
+            do {
+                let data = try Data(contentsOf: path, options: .mappedIfSafe)
+                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                
+                if  let song = jsonResult as? Dictionary<String, AnyObject>,
+                    let info = song["info"] as? [String: Int],
+                    let instruments = song["instruments"] as? [String : [[String: Any]]]  {
+                    
+                    self.tempo = info["tempo"]!
+                    self.beats = info["beats"]!
+                    self.rythm = info["rythm"]!
+                    
+                    //print("Count of instruments is \(instruments.count)")
+                    
+                    for (instrument, notes) in instruments {
+                        //print(instrument + " plays the following notes:")
+                        
+                        if notes.count == 0 {
+                            self.instruments[instrument] = [Note]()
+                        }
+                        
+                        for note in notes {
+                            let pitch = note["pitch"] as! String
+                            let octave = note["octave"] as! Int
+                            let time = note["time"] as! Int
+                            
+                            let newNote = Note(pitch: pitch, octave: octave, time: time)
+                            
+                            //print("Add new note to '\(instrument)': \(newNote.pitch!)\(newNote.octave!) at \(newNote.time!)")
+                            
+                            if self.instruments[instrument] == nil {
+                                self.instruments[instrument] = [Note]()
+                            }
+                            self.instruments[instrument]! += [newNote]
+                            
+                            if time > length {
+                                self.length = time
+                            }
+                        }
+                    }
+                    
+                    self.length += 8
+                    
+                } else {
+                    print("Song.init >> Could not load song from json")
+                    self.tempo = 100
+                    self.beats = 4
+                    self.rythm = 4
+                    self.instruments = [String : [Note]]()
+                    self.length = 0
+                }
+                
+                
+            } catch {
+                print("Song.init >> Couldn't initialize song from Shared Folder: \(error)")
+            }
+            
         }
     }
     
@@ -91,45 +150,54 @@ public struct Song {
     private func getStringifiedSong() -> String {
         var instrumentsJsonString = "{"
         
-        for (instrument, notes) in self.instruments {
-            var instrumentString =
-            """
-            "\(instrument)": [
-            """
-            
-            for note in notes {
-                instrumentString +=
+        if self.instruments.count == 0 {
+            instrumentsJsonString +=
                 """
-                {
-                    "pitch": \(note.pitch!),
+                "piano": [],
+                "guitar": [],
+                "drums": [],
+                "cello": []
+                """
+        } else {
+            for (instrument, notes) in self.instruments {
+                var instrumentString =
+                """
+                "\(instrument)": [
+                """
+                
+                for note in notes {
+                    instrumentString +=
+                    """
+                    {
+                    "pitch": "\(note.pitch!)",
                     "octave": \(note.octave!),
                     "time": \(note.time!)
-                },
-                """
+                    },
+                    """
+                }
+                if notes.count > 0 {
+                    instrumentString = String(instrumentString.dropLast())
+                }
+                instrumentString += "],"
+                
+                instrumentsJsonString += instrumentString
             }
-            if notes.count > 0 {
-                instrumentString = String(instrumentString.dropLast())
-            }
-            instrumentString += "],"
-            
-            instrumentsJsonString += instrumentString
+            instrumentsJsonString = String(instrumentsJsonString.dropLast())
         }
-        instrumentsJsonString = String(instrumentsJsonString.dropLast())
-        
         instrumentsJsonString += "}"
         
         
         let wholeString =
-"""
-{
-     "info": {
-         "tempo": \(self.tempo),
-         "beats": \(self.beats),
-         "rythm": \(self.rythm)
-     },
-     "instruments": \(instrumentsJsonString)
-}
-"""
+            """
+            {
+                 "info": {
+                     "tempo": \(self.tempo),
+                     "beats": \(self.beats),
+                     "rythm": \(self.rythm)
+                 },
+                 "instruments": \(instrumentsJsonString)
+            }
+            """
         
         
         return wholeString
@@ -150,9 +218,7 @@ public struct Song {
         
         // stringify song
         let fileContent = getStringifiedSong()
-        
-        print("will try to save: \n\(fileContent)")
-        
+                
         let fileName = playgroundSharedDataDirectory.appendingPathComponent(fileName + ".json")
         
         do {

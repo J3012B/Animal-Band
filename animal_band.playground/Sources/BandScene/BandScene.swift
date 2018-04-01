@@ -47,7 +47,7 @@ public class BandScene: SKScene {
     
     private func loadSong() {
         print("Current Song, which will be played is: " + currentSong)
-        self.songObject = Song(filePath: "songs/" + currentSong)
+        self.songObject = Song(filePath: currentSong)
     }
     
     /*
