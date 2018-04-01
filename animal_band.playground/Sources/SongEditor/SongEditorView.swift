@@ -53,7 +53,15 @@ public class SongEditorView: UIView {
     }
     
     @objc private func saveButtonPushed() {
-        self.body.songObject.save(to: "under_the_sea")
+        self.body.songObject.save(to: titleToSaveTo)
+    }
+    
+    @objc private func clearButtonPushed() {
+        for (instrument, _) in self.body.songObject.instruments {
+            self.body.songObject.instruments[instrument] = []
+        }
+        self.body.songObject.instruments["piano"]!.append(Note(pitch: "b", octave: 6, time: 240))
+        self.body.reload(instrument: self.currentInstrument)
     }
     
     
@@ -93,14 +101,16 @@ public class SongEditorView: UIView {
         
         self.menuBar.addSubview(instrumentPicker)
         
+        /*
         /* Add New Button */
         let newButton = UIButton(frame: CGRect(x: menuBar.frame.width - padding - buttonWidth, y: padding,
                                                width: buttonWidth, height: buttonWidth))
         newButton.addTarget(self, action: #selector(newButtonPushed), for: .touchUpInside)
         newButton.setImage(UIImage(named: "Menu/Song_Buttons/newButton.png"), for: .normal)
+ */
         
         /* Add Load Button */
-        let loadButton = UIButton(frame: CGRect(x: newButton.frame.minX - 2 * padding - buttonWidth, y: padding,
+        let loadButton = UIButton(frame: CGRect(x: menuBar.frame.width - padding - buttonWidth, y: padding,
                                                 width: buttonWidth, height: buttonWidth))
         loadButton.addTarget(self, action: #selector(loadButtonPushed), for: .touchUpInside)
         loadButton.setImage(UIImage(named: "Menu/Song_Buttons/loadButton.png"), for: .normal)
@@ -111,11 +121,16 @@ public class SongEditorView: UIView {
         saveButton.addTarget(self, action: #selector(saveButtonPushed), for: .touchUpInside)
         saveButton.setImage(UIImage(named: "Menu/Song_Buttons/saveButton.png"), for: .normal)
         
+        /* Add Clear Button */
+        let clearButton = UIButton(frame: CGRect(x: saveButton.frame.minX - 2 * padding - buttonWidth, y: padding, width: buttonWidth, height: buttonWidth))
+        clearButton.addTarget(self, action: #selector(clearButtonPushed), for: .touchUpInside)
+        clearButton.setImage(UIImage(named: "Menu/Song_Buttons/clearButton.png"), for: .normal)
         
         
         self.menuBar.addSubview(loadButton)
         self.menuBar.addSubview(saveButton)
-        self.menuBar.addSubview(newButton)
+        self.menuBar.addSubview(clearButton)
+        //self.menuBar.addSubview(newButton)
     }
     
     /*  BODY  */

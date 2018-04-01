@@ -4,11 +4,13 @@ public class AnimalBandView: UIView {
     
     private var audienceApplauses: Bool = true
     
-    public init(size: CGSize, audienceApplauses: Bool) {
+    public init(size: CGSize, audienceApplauses: Bool, willSaveTo: String) {
         let mySize = size.width * 1.5 <= size.height ? CGSize(width: size.width, height: size.width * 1.5) : CGSize(width: size.height * (2/3), height: size.height)
         super.init(frame: CGRect(x:0, y: 0, width: mySize.width, height: mySize.height))
         
         self.audienceApplauses = audienceApplauses
+        
+        titleToSaveTo = willSaveTo
         
         addSubViews()
     }

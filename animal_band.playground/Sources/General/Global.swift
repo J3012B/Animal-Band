@@ -2,6 +2,7 @@ import Foundation
 
 
 var currentSong = "under_the_sea"
+var titleToSaveTo = "my_song"
 var audienceApplauses = true
 
 public func uglify(songName: String) -> String {
