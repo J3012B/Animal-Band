@@ -5,17 +5,6 @@ Animal Band
 	* bar
 		-> draw/animate audience
 		-> music notes fly away while playing
-- songs
-	* can you feel the love tonight
-	* we are the champions
-	* 
 
-
-- animals
-	* frog -> drums
-	* turtle -> cello
-	*
-	* draw them
-	* animate them
 
 - add extras

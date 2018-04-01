@@ -1,7 +1,7 @@
 import Foundation
 
 
-var currentSong = "alle_meine_entchen"
+var currentSong = "under_the_sea"
 var audienceApplauses = true
 
 public func uglify(songName: String) -> String {

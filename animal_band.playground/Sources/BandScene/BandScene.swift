@@ -63,7 +63,7 @@ public class BandScene: SKScene {
     }
     
     private func loadSong() {
-        print("Current Song, which will be played is: " + currentSong)
+        //print("Current Song, which will be played is: " + currentSong)
         self.songObject = Song(filePath: currentSong)
         self.notePlayers = []
     }
@@ -84,6 +84,7 @@ public class BandScene: SKScene {
         playSong()
         
         self.songEditorView!.songIsPlayingView.songStartedPlaying()
+        self.songEditorView!.songSelectionView.isHidden = true
     }
     
     private func prepareAudio() {
@@ -366,31 +367,34 @@ public class BandScene: SKScene {
     private func addAnimals() {
         // Piano Cat
         let animalPianoCat = Animal(type: "cat", sceneSize: frame.size)
-        animalPianoCat.position = CGPoint(x: stage.frame.width * 0.3, y: stage.frame.height * 0.7)
+        animalPianoCat.position = CGPoint(x: stage.frame.width * 0.2, y: stage.frame.height * 0.5)
         
         // Guitar Dog
         let animalGuitarDog = Animal(type: "dog", sceneSize: frame.size)
-        animalGuitarDog.position = CGPoint(x: stage.frame.width * 0.8, y: stage.frame.height * 0.5)
+        animalGuitarDog.position = CGPoint(x: stage.frame.width * 0.9, y: stage.frame.height * 0.5)
         
         // Cello Turtle
         let animalCelloTurtle = Animal(type: "turtle", sceneSize: frame.size)
-        animalCelloTurtle.position = CGPoint(x: stage.frame.width * 0.6, y: stage.frame.height * 0.9)
+        animalCelloTurtle.position = CGPoint(x: stage.frame.width * 0.7, y: stage.frame.height * 0.8)
         
-        
-        
-        // Drum Frog
+        // Drum Monkey
+        let animalDrumMonkey = Animal(type: "monkey", sceneSize: frame.size)
+        animalDrumMonkey.position = CGPoint(x: stage.frame.width * 0.45, y: stage.frame.height * 0.9)
         
         stage.addChild(animalPianoCat)
         stage.addChild(animalGuitarDog)
         stage.addChild(animalCelloTurtle)
+        stage.addChild(animalDrumMonkey)
         
         self.animals.append(animalPianoCat)
         self.animals.append(animalGuitarDog)
         self.animals.append(animalCelloTurtle)
+        self.animals.append(animalDrumMonkey)
         
         animalPianoCat.updateSize()
         animalGuitarDog.updateSize()
         animalCelloTurtle.updateSize()
+        animalDrumMonkey.updateSize()
         
         self.updateAnimalOrder()
     }

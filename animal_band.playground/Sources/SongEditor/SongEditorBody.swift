@@ -246,7 +246,7 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
                 let noteIndex = getPosition(note: note)
                 self.noteField.noteViews[noteIndex].isSelected = true
             }
-            print("SongEditorBody.loadNotes >> did load notes")
+            //print("SongEditorBody.loadNotes >> did load notes")
         } else {
             print("*** SongEditorBody.loadNotes >> Couldn't load notes for instrument '\(self.instrument!)'")
         }

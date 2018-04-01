@@ -2,9 +2,13 @@ import SpriteKit
 
 public class Animal: SKSpriteNode {
     
-    var minHeight: CGFloat!
-    var isDragged: Bool = false
-    var type: String!
+    private let frameDict = ["cat": 4, "dog": 2, "turtle": 2, "monkey": 4]
+    private let durationDict = ["cat": 0.3, "dog": 0.5, "monkey": 0.4, "turtle": 0.45]
+    
+    private var frames: [SKTexture]?
+    private var minHeight: CGFloat!
+    public var isDragged: Bool = false
+    public var type: String!
     
     public init(type: String, sceneSize: CGSize) {
         // load texture
@@ -19,6 +23,8 @@ public class Animal: SKSpriteNode {
         self.type = type
         
         self.updateSize()
+        
+        self.prepareAnimation()
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -34,25 +40,22 @@ public class Animal: SKSpriteNode {
         }
     }
     
-    public func startAnimation() {
-        let frameDict = ["cat": 4, "dog": 2, "turtle": 0]
-        var frames = [SKTexture]()
+    private func prepareAnimation() {
+        self.frames = [SKTexture]()
         
         for i in 0..<frameDict[self.type!]! {
             let frame = SKTexture(imageNamed: "animals/\(type!)_playing/\(type!)_playing_\(i).png")
             frame.filteringMode = .nearest
-            frames.append(frame)
+            frames!.append(frame)
         }
-        
-        //print("After the loop")
-        
-        if frames.count != 0 {
-            let animate = SKAction.animate(with: frames, timePerFrame: 0.3)
+    }
+    
+    public func startAnimation() {
+        if frames != nil {
+            let animate = SKAction.animate(with: frames!, timePerFrame: durationDict[type!]!)
             let forever = SKAction.repeatForever(animate)
             self.run(forever)
         }
-
-        //print("end of startAnimation()")
     }
     
     public func stopAnimate() {
