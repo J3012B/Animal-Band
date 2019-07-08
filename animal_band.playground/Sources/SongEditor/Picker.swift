@@ -11,7 +11,7 @@ class Picker: UIView {
     public var currentTitle: String = ""
     
     private var titles: [String]!
-    private var action: () -> Void!
+    private var action: () -> Void?
     
     public init(frame: CGRect, titles: [String], action: @escaping () -> Void) {
         self.titles = titles

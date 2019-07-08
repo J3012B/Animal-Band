@@ -17,9 +17,5 @@ public class NoteField: UIScrollView {
         super.init(coder: aDecoder)
     }
     
-    
-    
-    
-    
 }
 

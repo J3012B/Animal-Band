@@ -72,7 +72,7 @@ public class SongEditorBody: UIView, UIScrollViewDelegate {
     
     //
     private func getPosition(note: Note) -> Int {
-        let positionOfToneInScale = Int(self.notesUgly.index(of: note.pitch)!) // position of 'c_s_' f.i.
+        let positionOfToneInScale = Int(self.notesUgly.firstIndex(of: note.pitch)!) // position of 'c_s_' f.i.
         let positionInToneScale = (self.octaveMaxDict[self.instrument]! - note.octave + 1) * self.notesUgly.count - positionOfToneInScale - 1
         let position = note.time * self.range + positionInToneScale
         
